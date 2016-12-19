@@ -1,0 +1,12 @@
+*.fastq.gz
+*.sam
+*.bam
+*.sai
+*.bai
+*.e*
+*.o*
+*.fa
+*.fa.*
+*.dict
+*.txt
+*~

@@ -1,3 +1,7 @@
+calls/
+log/
+reference/
+testcalls/
 *.fastq.gz
 *.sam
 *.bam

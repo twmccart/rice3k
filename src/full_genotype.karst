@@ -1,0 +1,33 @@
+#!/bin/bash
+
+#PBS -l nodes=1:ppn=1,walltime=14:00:00,vmem=20gb
+#PBS -k o
+#PBS -j oe
+#PBS -M twmccart@iu.edu
+#PBS -m abe
+
+ACCESSION=$1
+
+# load modules for karst
+
+ROOT="/N/dc2/scratch/twmccart/3KRiceReads/20cultivarphylogeny/VCFs"
+
+cd $ROOT
+
+source $ROOT/src/twmccart.environment
+
+cd $CALLS
+
+module load java tabix vcftools/0.1.14
+
+full_genotype $ACCESSION
+echo "got full vcf, removing indels now"
+
+vcftools --vcf ${ACCESSION}.full.vcf --remove-indels --recode --out ${ACCESSION}.full.noindels.vcf
+echo "indels gone, sorting now"
+
+< ${ACCESSION}.full.noindels.vcf bgzip > ${ACCESSION}.full.noindels.sorted.vcf.gz
+echo "sorted, indexing now"
+
+tabix -p vcf ${ACCESSION}.full.noindels.sorted.vcf.gz
+echo "indexing complete"

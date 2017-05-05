@@ -20,4 +20,4 @@ cd $calls
 
 #module load java tabix vcftools/0.1.14
 
-full_genotype $accession
+clean_and_split_vcf $accession

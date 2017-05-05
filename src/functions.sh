@@ -5,41 +5,41 @@
 
 function call_variants() {
 	which java
-	echo $GATK
+	echo $gatk
 
 	CULT=$1
 
-	$GATK -T HaplotypeCaller \
-      		-R $REFERENCE \
-      		-I $MAPS/${CULT}.realigned.bam \
+	$gatk -T HaplotypeCaller \
+      		-R $reference \
+      		-I $maps/${CULT}.realigned.bam \
       		-ERC GVCF \
-      		-o $CALLS/${CULT}.g.vcf \
+      		-o $calls/${CULT}.g.vcf \
     		-nct 8
 }
 
 function genotype() {
 	which java
-	echo $GATK
+	echo $gatk
 
 	CULT=$1
 
-	$GATK -T GenotypeGVCFs \
-      		-R $REFERENCE \
-      		-V $CALLS/${CULT}.g.vcf \
-      		-o $CALLS/${CULT}.vcf
+	$gatk -T GenotypeGVCFs \
+      		-R $reference \
+      		-V $calls/${CULT}.g.vcf \
+      		-o $calls/${CULT}.vcf
 }
 
 function full_genotype() {
 	which java
-	echo $GATK
+	echo $gatk
 
 	CULT=$1
 
-	$GATK -T GenotypeGVCFs \
-      		-R $REFERENCE \
-      		-V $CALLS/${CULT}.g.vcf \
+	$gatk -T GenotypeGVCFs \
+      		-R $reference \
+      		-V $calls/${CULT}.g.vcf \
             -allSites \
-      		-o $CALLS/${CULT}.full.vcf \
+      		-o $calls/${CULT}.full.vcf \
 	    	-nt 24
 }
 
@@ -50,17 +50,17 @@ function full_genotype() {
 
 function call_variants_range() {
 	which java
-	echo $GATK
+	echo $gatk
 
 	CULT=$1
 	LOCI=$2
 
-	$GATK -T HaplotypeCaller \
+	$gatk -T HaplotypeCaller \
 		-L $LOCI \
-      		-R $REFERENCE \
-      		-I $MAPS/${CULT}.realigned.bam \
+      		-R $reference \
+      		-I $maps/${CULT}.realigned.bam \
       		-ERC GVCF \
-      		-o $CALLS/${CULT}-${LOCI}.g.vcf
+      		-o $calls/${CULT}-${LOCI}.g.vcf
 }
 
 

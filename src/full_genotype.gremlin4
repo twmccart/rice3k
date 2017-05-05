@@ -7,25 +7,25 @@
 #PBS -M twmccart@iu.edu
 #PBS -m abe
 
-ACCESSION=$1
+accession=$1
 
 # load modules for karst
 
-ROOT="/scratch/twmccart/3KRiceReads/20cultivarphylogeny/VCFs"
+root="/scratch/twmccart/3KRicereads/20cultivarphylogeny/VCFs"
 
-cd $ROOT
+cd $root
 
-source $ROOT/src/twmccart.environment
+source $root/src/twmccart.environment
 
-cd $CALLS
+cd $calls
 
 #module load java tabix vcftools/0.1.14
 
-full_genotype $ACCESSION
+full_genotype $accession
 echo "got full vcf, removing indels now"
 
-vcftools --vcf ${ACCESSION}.full.vcf --remove-indels --recode --stdout | vcf-sort | bgzip -c > ${ACCESSION}.full.noindels.sorted.vcf.gz
+vcftools --vcf ${accession}.full.vcf --remove-indels --recode --stdout | vcf-sort | bgzip -c > ${accession}.full.noindels.sorted.vcf.gz
 echo "sorted, indexing now"
 
-tabix -p vcf ${ACCESSION}.full.noindels.sorted.vcf.gz
+tabix -p vcf ${accession}.full.noindels.sorted.vcf.gz
 echo "indexing complete"

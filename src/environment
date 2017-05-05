@@ -1,16 +1,16 @@
 #!/bin/bash
 
-export PROJECT_ROOT=$(pwd)
-export REFERENCE=${PROJECT_ROOT}/reference/all.chrs.fix.fasta
-export READS=${PROJECT_ROOT}/reads
-export MAPS=${PROJECT_ROOT}/maps
-export CALLS=${PROJECT_ROOT}/calls
-export SRC=$PROJECT_ROOT/src
-export LOGS=$PROJECT_ROOT/log
+export project_root=$(pwd)
+export reference=${project_root}/reference/all.chrs.fix.fasta
+export reads=${project_root}/reads
+export maps=${project_root}/maps
+export calls=${project_root}/calls
+export src=$project_root/src
+export logs=$project_root/log
 
-mkdir -p $READS $MAPS $CALLS $LOGS
+mkdir -p $reads $maps $calls $logs
 
-export PICARD="java -jar $SRC/picard.jar"
-export GATK="java -jar $SRC/GenomeAnalysisTK.jar"
+export picard="java -jar $src/picard.jar"
+export gatk="java -jar $src/GenomeAnalysisTK.jar"
 
-source $SRC/functions.sh
+source $src/functions.sh

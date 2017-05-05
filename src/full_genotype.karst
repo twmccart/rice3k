@@ -6,22 +6,22 @@
 #PBS -M twmccart@iu.edu
 #PBS -m abe
 
-ACCESSION=$1
+accession=$1
 
 # load modules for karst
 
-ROOT="/N/dc2/scratch/twmccart/3KRiceReads/20cultivarphylogeny/VCFs"
+root="/N/dc2/scratch/twmccart/3KRicereads/20cultivarphylogeny/VCFs"
 
-cd $ROOT
+cd $root
 
-source $ROOT/src/twmccart.environment
+source $root/src/twmccart.environment
 
-cd $CALLS
+cd $calls
 
 module load java tabix bcftools
 
-full_genotype $ACCESSION
+full_genotype $accession
 echo
 echo "got full vcf, cleaning now"
 echo
-clean_vcf $ACCESSION
+clean_vcf $accession

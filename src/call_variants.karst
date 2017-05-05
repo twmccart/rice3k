@@ -6,17 +6,17 @@
 #PBS -M twmccart@iu.edu
 #PBS -m abe
 
-ACCESSION=$1
+accession=$1
 
 # load modules for karst
 module load java
 
-ROOT="/N/dc2/scratch/twmccart/3KRiceReads/20cultivarphylogeny/VCFs"
+root="/N/dc2/scratch/twmccart/3KRicereads/20cultivarphylogeny/VCFs"
 
-cd $ROOT
+cd $root
 
-source $ROOT/src/environment
+source $root/src/environment
 
-cd $CALLS
+cd $calls
 
-call_variants $ACCESSION
+call_variants $accession

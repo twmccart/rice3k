@@ -22,10 +22,10 @@ cd $CALLS
 #module load java tabix vcftools/0.1.14
 
 full_genotype $ACCESSION
-echo "got full vcf, removing indels now"
+#echo "got full vcf, removing indels now"
 
-vcftools --vcf ${ACCESSION}.full.vcf --remove-indels --recode --stdout | vcf-sort | bgzip -c > ${ACCESSION}.full.noindels.sorted.vcf.gz
-echo "sorted, indexing now"
+#vcftools --vcf ${ACCESSION}.full.vcf --remove-indels --recode --stdout | vcf-sort | bgzip -c > ${ACCESSION}.full.noindels.sorted.vcf.gz
+#echo "sorted, indexing now"
 
-tabix -p vcf ${ACCESSION}.full.noindels.sorted.vcf.gz
-echo "indexing complete"
+#tabix -p vcf ${ACCESSION}.full.noindels.sorted.vcf.gz
+#echo "indexing complete"

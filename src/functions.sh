@@ -3,7 +3,7 @@
 
 # function that will generate the gvcf file for a given cultivar
 
-function call_variants {
+function call_variants() {
 	which java
 	echo $GATK
 
@@ -17,7 +17,7 @@ function call_variants {
     		-nct 8
 }
 
-function genotype {
+function genotype() {
 	which java
 	echo $GATK
 
@@ -29,7 +29,7 @@ function genotype {
       		-o $CALLS/${CULT}.vcf
 }
 
-function full_genotype {
+function full_genotype() {
 	which java
 	echo $GATK
 
@@ -48,7 +48,7 @@ function full_genotype {
 # loci can be in the gatk format chrname:begin-end
 # or it can be a file with a list of such formatted loci
 
-function call_variants_range {
+function call_variants_range() {
 	which java
 	echo $GATK
 
@@ -64,3 +64,8 @@ function call_variants_range {
 }
 
 
+function clean_vcf() {
+	cultivar=$1
+	bcftools view --exclude-uncalled --exclude-types 'indels' -O z -o ${cultivar}.cleaned.vcf.gz ${cultivar}.full.vcf
+	tabix ${cultivar}.cleaned.vcf.gz
+}

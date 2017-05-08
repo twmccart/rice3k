@@ -40,7 +40,7 @@ function full_genotype() {
       		-V $calls/${CULT}.g.vcf \
             -allSites \
       		-o $calls/${CULT}.full.vcf \
-	    	-nt 24
+	    	-nt 12
 }
 
 

@@ -6,6 +6,7 @@ set -euo pipefail
 
 #/home/twmccart/bcftools-1.4/bcftools merge -m both *.vcf.gz -O v -o 6test.merge.vcf
 vcf-merge *.vcf.gz > 6test.merge.vcf
-vcftools --remove-indels --non-ref-af-any 0.5 --max-missing 1 --recode -out 6test.merge.intersect
+bcftools view --exclude-uncalled --exclude-types 'indels' --min-ac 1 -O v -o 6test.merge.cleaned.vcf 6test.merge.vcf
+#vcftools --remove-indels --non-ref-af-any 0.5 --max-missing 1 --recode -out 6test.merge.intersect
 #vcftools --vcf ${accession}.full.vcf --remove-indels --recode --stdout | bgzip -c > ${accession}.full.noindels.vcf.gz && \
 #tabix -p vcf ${accession}.full.noindels.vcf.gz

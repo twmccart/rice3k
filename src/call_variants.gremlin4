@@ -15,7 +15,7 @@ root="/scratch/twmccart/3KRicereads/20cultivarphylogeny/VCFs"
 
 cd $root
 
-source $root/src/twmccart.environment
+source $root/src/environment
 
 cd $calls
 

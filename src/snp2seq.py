@@ -1,41 +1,45 @@
 #!/usr/bin/env python
 # This script originates with Murat Ozturk.
 
-from sys import argv
+from __future__ import print_function
 import vcf
 from Bio.Seq import Seq
 from Bio import SeqIO
 from Bio.SeqRecord import SeqRecord
 
-
-def main(arguments):
+def vcf_to_fasta(input_file_name):
     """Converts a multi-sample VCF file into a FASTA alignment
 
     Args:
-        arguments: a list that should contain 2 strings, the name of the invoked
-            program, and the name of input VCF file
+        input_file_name: a string that is the name of input VCF file
     Returns:
         Writes out a FASTA file containing sequences for each sample in the input
         VCF file. These function as an alignment for the purposes of treeing.
     """
 
-    input_file_name=arguments[1]
     with open(input_file_name) as input_file:
-        vcf=vcf.Reader(input_file)
-        sequences={}
-        for sample in vcf.samples:
-            seq[sample]=''
+        vcf_file=vcf.Reader(input_file)
+        sequences_dict={}
 
-        for record in vcf:
+        for sample in vcf_file.samples:
+            sequences_dict[sample]=[] #Empty list instead of string because consecutive string appends are apparently slow.
+
+        for record in vcf_file:
             for sample in record.samples:
-                seq[sample.sample] += sample.gt_bases[0]
+                sequences_dict[sample.sample].append(sample.gt_bases[0]) # This is taking the first base only. Adjust this if the input isn't heterozygous.
+        #print("sequences_dict:")
+        #print(sequences_dict)
+        bunch = [ SeqRecord(Seq("".join(sequences_dict[cultivar])), cultivar) for cultivar in sequences_dict]
+        #print("bunch: ")
+        #print(bunch)
+        SeqIO.write(bunch, input_file_name + ".fasta", "fasta")
 
 
 
-        bunch = [ SeqRecord(Seq(seq[cult]), cult) for cult in seq]
+def main(arguments):
+    input_file_name=arguments[1]
+    vcf_to_fasta(input_file_name)
 
-        SeqIO.write(bunch , 'rice.fasta', 'fasta')
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     import sys
     sys.exit(main(sys.argv))

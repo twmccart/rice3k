@@ -18,7 +18,7 @@ source $root/src/environment
 
 cd $calls
 
-module load java/1.8.0_40 java/jre/1.8.0_73 tabix bcftools
+module load java/1.8.0_40 tabix bcftools
 
 full_genotype $accession
 echo

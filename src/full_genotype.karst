@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#PBS -l nodes=1:ppn=1,walltime=24:00:00,vmem=20gb
+#PBS -l nodes=1:ppn=12,walltime=0:30:00,vmem=20gb
 #PBS -k o
 #PBS -j oe
 #PBS -M twmccart@iu.edu
@@ -10,7 +10,7 @@ accession=$1
 
 # load modules for karst
 
-root="/N/dc2/scratch/twmccart/3KRicereads/20cultivarphylogeny/VCFs"
+root="/N/dc2/scratch/twmccart/3KRiceReads/20cultivarphylogeny/VCFs"
 
 cd $root
 
@@ -18,7 +18,7 @@ source $root/src/environment
 
 cd $calls
 
-module load java tabix bcftools
+module load java/1.8.0_40 tabix bcftools
 
 full_genotype $accession
 echo

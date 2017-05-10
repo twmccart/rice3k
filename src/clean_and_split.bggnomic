@@ -16,7 +16,7 @@ cd $root
 
 source $root/src/environment
 
-cd $calls
+cd fullcalls
 
 #module load java tabix vcftools/0.1.14
 

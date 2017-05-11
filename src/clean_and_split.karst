@@ -11,7 +11,7 @@ accession=$1
 # load modules for karst
 module load tabix bcftools
 
-root="/N/dc2/scratch/twmccart/3KRicereads/20cultivarphylogeny/VCFs"
+root="/N/dc2/scratch/twmccart/3KRiceReads/20cultivarphylogeny/VCFs"
 
 cd $root
 

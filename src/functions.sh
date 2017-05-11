@@ -66,6 +66,8 @@ function call_variants_range() {
 
 function clean_vcf() {
 	cultivar=$1
+	bgzip ${cultivar}.full.vcf
+	tabix ${cultivar}.full.vcf.gz
 	bcftools view --exclude-uncalled --exclude-types 'indels' -O z -o ${cultivar}.cleaned.vcf.gz ${cultivar}.full.vcf
 	tabix ${cultivar}.cleaned.vcf.gz
 }

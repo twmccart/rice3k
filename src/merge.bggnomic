@@ -1,0 +1,10 @@
+#!/bin/bash
+set -euo pipefail
+
+root="/scratch/twmccart/VCFs"
+
+source $root/src/environment
+
+for chromosome in {chr01,chr02,chr03,chr04,chr05,chr06,chr07,chr08,chr09,chr10,chr11,chr12}; do
+	merge $chromosome &
+done

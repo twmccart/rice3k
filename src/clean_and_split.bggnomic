@@ -16,8 +16,8 @@ cd $root
 
 source $root/src/environment
 
-cd fullcalls
+cd calls
 
-#module load java tabix vcftools/0.1.14
+#module load java tabix vcftools/0.1.13
 
 clean_and_split_vcf $accession

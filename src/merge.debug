@@ -1,15 +1,15 @@
 #!/bin/bash
 
-#PBS -l nodes=1:ppn=12,walltime=0:15:00,vmem=20gb
+#PBS -l nodes=1:ppn=1,walltime=0:05:00,vmem=10gb
 #PBS -k o
 #PBS -j oe
 #PBS -M twmccart@iu.edu
 #PBS -m abe
 
-accession=$1
+chromosome=$1
 
 # load modules for karst
-module load tabix bcftools
+module load bcftools vcftools/0.1.13 tabix
 
 root="/N/dc2/scratch/twmccart/3KRiceReads/20cultivarphylogeny/VCFs"
 
@@ -17,6 +17,6 @@ cd $root
 
 source $root/src/environment
 
-cd $calls
+cd $split
 
-clean_and_split_vcf $accession
+merge $chromosome

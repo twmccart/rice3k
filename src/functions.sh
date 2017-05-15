@@ -77,9 +77,14 @@ function clean_and_split_vcf() {
 	bgzip ${cultivar}.full.vcf
 	tabix ${cultivar}.full.vcf.gz
 	for chromosome in chr{01,02,03,04,05,06,07,08,09,10,11,12}; do (
-		bcftools view --exclude-uncalled --exclude-types 'indels' --genotype ^het -r ${chromosome} -O z -o ${cultivar}.${chromosome}.cleaned.vcf.gz ${cultivar}.full.vcf.gz ; tabix ${cultivar}.${chromosome}.cleaned.vcf.gz) &
+		bcftools view --exclude-uncalled --exclude-types 'indels' --genotype ^het -r ${chromosome} -O z -o ../split/${cultivar}.${chromosome}.cleaned.vcf.gz ${cultivar}.full.vcf.gz ; tabix ../split/${cultivar}.${chromosome}.cleaned.vcf.gz) &
 	done
 	wait
 	echo "SPLIT IS FINISHED"
 }
 
+function merge() {
+	chromosome=$1
+	vcf-merge *${chromosome}*.vcf.gz > ${chromosome}.merge.vcf 
+	< ${chromosome}.merge.vcf bcftools view --exclude-uncalled --exclude-types 'indels' --min-ac 1 --genotype ^miss -O u | awk ' /^#/ {print} length($4) == 1 {print} ' > ${chromosome}.merge.cleaned.vcf
+}

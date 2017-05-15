@@ -21,3 +21,7 @@ cd $calls
 #module load java tabix vcftools/0.1.14
 
 full_genotype $accession
+echo
+echo "got full vcf, cleaning now"
+echo
+clean_and_split_vcf $accession

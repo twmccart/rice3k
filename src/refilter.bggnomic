@@ -1,0 +1,14 @@
+#!/bin/bash
+set -euo pipefail
+
+root="/scratch/twmccart/VCFs"
+
+cd $root
+
+source $root/src/environment
+
+cd $merges
+
+for file in *.merge.cleaned.vcf; do
+	refilter_merged $file &
+done

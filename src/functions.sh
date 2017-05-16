@@ -86,7 +86,13 @@ function clean_and_split_vcf() {
 function merge() {
 	chromosome=$1
 	vcf-merge *${chromosome}*.vcf.gz > ${chromosome}.merge.vcf
-	< ${chromosome}.merge.vcf bcftools view --exclude-uncalled --exclude-types 'indels' --min-ac 1 --genotype ^miss -O u | awk ' /^#/ {print} length($4) == 1 {print} ' > ${chromosome}.merge.cleaned.vcf
+	< ${chromosome}.merge.vcf bcftools view --exclude-uncalled --exclude-types 'indels' --min-ac 1 --genotype ^miss -O v | awk ' /^#/ {print} length($4) == 1 {print} ' > ${chromosome}.merge.cleaned.vcf
 }
 
-function refilter() {
+function refilter_merged() {
+	file=$1
+	< $file bcftools view --min-ac 2 -O v > ${file%.vcf}.min2.vcf
+	< $file bcftools view --min-ac 3 -O v > ${file%.vcf}.min3.vcf
+	< $file bcftools view --min-ac 4 -O v > ${file%.vcf}.min4.vcf
+	< $file bcftools view --min-ac 5 -O v > ${file%.vcf}.min5.vcf
+}

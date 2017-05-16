@@ -10,11 +10,11 @@ function call_variants() {
 	CULT=$1
 
 	$gatk -T HaplotypeCaller \
-      		-R $reference \
-      		-I $maps/${CULT}.realigned.bam \
-      		-ERC GVCF \
-      		-o $calls/${CULT}.g.vcf \
-    		-nct 8
+		-R $reference \
+		-I $maps/${CULT}.realigned.bam \
+		-ERC GVCF \
+		-o $calls/${CULT}.g.vcf \
+		-nct 8
 }
 
 function genotype() {
@@ -24,9 +24,9 @@ function genotype() {
 	CULT=$1
 
 	$gatk -T GenotypeGVCFs \
-      		-R $reference \
-      		-V $calls/${CULT}.g.vcf \
-      		-o $calls/${CULT}.vcf
+		-R $reference \
+		-V $calls/${CULT}.g.vcf \
+		-o $calls/${CULT}.vcf
 }
 
 function full_genotype() {
@@ -36,11 +36,11 @@ function full_genotype() {
 	CULT=$1
 
 	$gatk -T GenotypeGVCFs \
-      		-R $reference \
-      		-V $calls/${CULT}.g.vcf \
-            -allSites \
-      		-o $calls/${CULT}.full.vcf \
-	    	-nt 24
+		-R $reference \
+		-V $calls/${CULT}.g.vcf \
+		-allSites \
+		-o $calls/${CULT}.full.vcf \
+		-nt 24
 }
 
 
@@ -57,10 +57,10 @@ function call_variants_range() {
 
 	$gatk -T HaplotypeCaller \
 		-L $LOCI \
-      		-R $reference \
-      		-I $maps/${CULT}.realigned.bam \
-      		-ERC GVCF \
-      		-o $calls/${CULT}-${LOCI}.g.vcf
+		-R $reference \
+		-I $maps/${CULT}.realigned.bam \
+		-ERC GVCF \
+		-o $calls/${CULT}-${LOCI}.g.vcf
 }
 
 
@@ -73,7 +73,7 @@ function clean_vcf() {
 }
 
 function clean_and_split_vcf() {
-    cultivar=$1
+	cultivar=$1
 	bgzip ${cultivar}.full.vcf
 	tabix -f ${cultivar}.full.vcf.gz
 	for chromosome in chr{01,02,03,04,05,06,07,08,09,10,11,12}; do (
@@ -85,6 +85,8 @@ function clean_and_split_vcf() {
 
 function merge() {
 	chromosome=$1
-	vcf-merge *${chromosome}*.vcf.gz > ${chromosome}.merge.vcf 
+	vcf-merge *${chromosome}*.vcf.gz > ${chromosome}.merge.vcf
 	< ${chromosome}.merge.vcf bcftools view --exclude-uncalled --exclude-types 'indels' --min-ac 1 --genotype ^miss -O u | awk ' /^#/ {print} length($4) == 1 {print} ' > ${chromosome}.merge.cleaned.vcf
 }
+
+function refilter() {

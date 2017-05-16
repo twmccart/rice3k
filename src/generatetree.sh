@@ -46,11 +46,11 @@ s/(NAMJAM[^']*)'/\1\'[\&!color=#ff0000\]/g"
 
 
 < $fasta sed -e "$cultivar_to_names" | sed 's/ <unknown description>//g' > ${fasta}.treeable
-rm -f RAxML.ERROR
-rm -f RAxML.log
+rm -f RAxML_${fasta%%.*}.ERROR
+rm -f RAxML_${fasta%%.*}.log
 rm -f RAxML*${fasta%%.*}*
 # Model ASC_GTRGAMMA must be used to correct for the fact that we're only using SNPs
-raxml -f a -m ASC_GTRGAMMA --asc-corr=lewis -n ${fasta%%.*} -N 10 -p 12345 -s ${fasta}.treeable -x 12345 2>&1 > RAxML.log || touch RAxML.ERROR
+raxml -f a -m ASC_GTRGAMMA --asc-corr=lewis -n ${fasta%%.*} -N 10 -p 12345 -s ${fasta}.treeable -x 12345 2>&1 > RAxML_${fasta%%.*}.log || touch RAxML_${fasta%%.*}.ERROR
 for file in RAxML_bestTree.${fasta%%.*} RAxML_bipartitions.${fasta%%.*}; do
 	# Put single quotes around each taxon
 	tree=$(< $file sed -E "s/([^(),']+):/'\1':/g")

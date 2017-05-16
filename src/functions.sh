@@ -92,9 +92,9 @@ function merge() {
 
 function refilter_merged() {
 	file=$1
-	< $file bcftools view --min-ac 2:minor -O v > ${file%.vcf}.min2.vcf
-	< $file bcftools view --min-ac 3:minor -O v > ${file%.vcf}.min3.vcf
-	< $file bcftools view --min-ac 4:minor -O v > ${file%.vcf}.min4.vcf
-	< $file bcftools view --min-ac 5:minor -O v > ${file%.vcf}.min5.vcf
-	< $file bcftools view --min-ac 8:minor -O v > ${file%.vcf}.min8.vcf
+	< $file bcftools view --min-ac 2 -O v > ${file%.vcf}.min2.vcf
+	< $file bcftools view --min-ac 3 -O v > ${file%.vcf}.min3.vcf
+	< $file bcftools view --min-ac 4 -O v > ${file%.vcf}.min4.vcf
+	< $file bcftools view --min-ac 5 -O v > ${file%.vcf}.min5.vcf
+	< $file bcftools view --min-ac 8 -O v > ${file%.vcf}.min8.vcf
 }

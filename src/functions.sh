@@ -87,14 +87,14 @@ function merge() {
 	chromosome=$1
 	vcf-merge *${chromosome}*.vcf.gz > ${chromosome}.merge.vcf
 	# The awk command filters any Multiple Nucleotide Polymorphisms, which are apparently a thing
-	< ${chromosome}.merge.vcf bcftools views --exclude-uncalled --exclude-types 'indels' --min-ac 1 --genotype ^miss -O v | awk ' /^#/ {print} length($4) == 1 {print} ' > ${chromosome}.merge.cleaned.vcf
+	< ${chromosome}.merge.vcf bcftools view --exclude-uncalled --exclude-types 'indels' --min-ac 1:minor --genotype ^miss -O v | awk ' /^#/ {print} length($4) == 1 {print} ' > ${chromosome}.merge.cleaned.vcf
 }
 
 function refilter_merged() {
 	file=$1
-	< $file bcftools view --min-ac 2 -O v > ${file%.vcf}.min2.vcf
-	< $file bcftools view --min-ac 3 -O v > ${file%.vcf}.min3.vcf
-	< $file bcftools view --min-ac 4 -O v > ${file%.vcf}.min4.vcf
-	< $file bcftools view --min-ac 5 -O v > ${file%.vcf}.min5.vcf
-	< $file bcftools view --min-ac 8 -O v > ${file%.vcf}.min8.vcf
+	< $file bcftools view --min-ac 2:minor -O v > ${file%.vcf}.min2.vcf
+	< $file bcftools view --min-ac 3:minor -O v > ${file%.vcf}.min3.vcf
+	< $file bcftools view --min-ac 4:minor -O v > ${file%.vcf}.min4.vcf
+	< $file bcftools view --min-ac 5:minor -O v > ${file%.vcf}.min5.vcf
+	< $file bcftools view --min-ac 8:minor -O v > ${file%.vcf}.min8.vcf
 }

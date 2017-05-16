@@ -8,6 +8,7 @@ export calls=${project_root}/calls
 export src=$project_root/src
 export logs=$project_root/log
 export split=${project_root}/split
+export merges=${project_root}/merges
 
 mkdir -p $reads $maps $calls $logs
 

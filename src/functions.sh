@@ -95,4 +95,5 @@ function refilter_merged() {
 	< $file bcftools view --min-ac 3 -O v > ${file%.vcf}.min3.vcf
 	< $file bcftools view --min-ac 4 -O v > ${file%.vcf}.min4.vcf
 	< $file bcftools view --min-ac 5 -O v > ${file%.vcf}.min5.vcf
+	< $file bcftools view --min-ac 8 -O v > ${file%.vcf}.min8.vcf
 }

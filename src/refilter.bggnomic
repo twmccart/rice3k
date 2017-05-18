@@ -9,6 +9,9 @@ source $root/src/environment
 
 cd $merges
 
-for file in *.merge.cleaned.vcf; do
-	refilter_merged $file &
-done
+#for file in *.merge.cleaned.vcf; do
+#	refilter_merged $file &
+#done
+
+file=$1
+refilter_merged $file

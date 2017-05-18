@@ -55,10 +55,10 @@ rm -f RAxML*${fasta%%.vcf.fasta}*
 #raxmlHPC -f d -m ASC_GTRGAMMA --asc-corr=lewis -n ${fasta%%.vcf.fasta} -p 12345 -s ${fasta}.treeable 2>&1 > RAxML_${fasta%%.vcf.fasta}.log || touch RAxML_${fasta%%.vcf.fasta}.ERROR
 
 # -f a means bootstrap analysis and bestTree in one run.
-#raxmlHPC -f a -m ASC_GTRGAMMA --asc-corr=lewis -n ${fasta%%.vcf.fasta} -N 100 -p 12345 -s ${fasta}.treeable -x 12345 2>&1 > RAxML_${fasta%%.vcf.fasta}.log || touch RAxML_${fasta%%.vcf.fasta}.ERROR
+raxmlHPC -f a -m ASC_GTRGAMMA --asc-corr=lewis -n ${fasta%%.vcf.fasta} -N 100 -p 12345 -s ${fasta}.treeable -x 12345 2>&1 > RAxML_${fasta%%.vcf.fasta}.log || touch RAxML_${fasta%%.vcf.fasta}.ERROR
 
 # This can go a lot faster with openmpi
-mpirun -n 6 raxmlHPC-MPI -f a -m ASC_GTRGAMMA --asc-corr=lewis -n ${fasta%%.vcf.fasta} -N 100 -p 12345 -s ${fasta}.treeable -x 12345 2>&1 > RAxML_${fasta%%.vcf.fasta}.log || touch RAxML_${fasta%%.vcf.fasta}.ERROR
+#mpirun -n 6 raxmlHPC-MPI -f a -m ASC_GTRGAMMA --asc-corr=lewis -n ${fasta%%.vcf.fasta} -N 100 -p 12345 -s ${fasta}.treeable -x 12345 2>&1 > RAxML_${fasta%%.vcf.fasta}.log || touch RAxML_${fasta%%.vcf.fasta}.ERROR
 
 
 #for file in RAxML_bestTree.${fasta%%.vcf.fasta}; do
@@ -102,7 +102,7 @@ begin figtree;
 	set layout.expansion=0;
 	set layout.layoutType="RADIAL";
 	set layout.zoom=0;
-	set legend.attribute=null;
+	set legend.attribute="bootstrap";
 	set legend.fontSize=10.0;
 	set legend.isShown=false;
 	set legend.significantDigits=4;
@@ -110,7 +110,7 @@ begin figtree;
 	set nodeBars.displayAttribute=null;
 	set nodeBars.isShown=false;
 	set nodeLabels.colorAttribute="User selection";
-	set nodeLabels.displayAttribute="Node ages";
+	set nodeLabels.displayAttribute="bootstrap";
 	set nodeLabels.fontName="sansserif";
 	set nodeLabels.fontSize=8;
 	set nodeLabels.fontStyle=0;

@@ -46,15 +46,23 @@ s/(NAMJAM[^']*)'/\1\'[\&!color=#ff0000\]/g"
 
 
 < $fasta sed -e "$cultivar_to_names" | sed 's/ <unknown description>//g' > ${fasta}.treeable
-rm -f RAxML_${fasta%%.*}.ERROR
-rm -f RAxML_${fasta%%.*}.log
-rm -f RAxML*${fasta%%.*}*
-# Model ASC_GTRGAMMA must be used to correct for the fact that we're only using SNPs
+rm -f RAxML_${fasta%%.vcf.fasta}.ERROR
+rm -f RAxML_${fasta%%.vcf.fasta}.log
+rm -f RAxML*${fasta%%.vcf.fasta}*
+## Model ASC_GTRGAMMA must be used to correct for the fact that we're only using SNPs
+
 # -f d means rapid hill-climbing algorithm
-raxml -f d -m ASC_GTRGAMMA --asc-corr=lewis -n ${fasta%%.*} -p 12345 -s ${fasta}.treeable 2>&1 > RAxML_${fasta%%.*}.log || touch RAxML_${fasta%%.*}.ERROR
+#raxmlHPC -f d -m ASC_GTRGAMMA --asc-corr=lewis -n ${fasta%%.vcf.fasta} -p 12345 -s ${fasta}.treeable 2>&1 > RAxML_${fasta%%.vcf.fasta}.log || touch RAxML_${fasta%%.vcf.fasta}.ERROR
+
 # -f a means bootstrap analysis and bestTree in one run.
-#raxml -f a -m ASC_GTRGAMMA --asc-corr=lewis -n ${fasta%%.*} -N 100 -p 12345 -s ${fasta}.treeable -x 12345 2>&1 > RAxML_${fasta%%.*}.log || touch RAxML_${fasta%%.*}.ERROR
-for file in RAxML_bestTree.${fasta%%.*} RAxML_bipartitions.${fasta%%.*}; do
+#raxmlHPC -f a -m ASC_GTRGAMMA --asc-corr=lewis -n ${fasta%%.vcf.fasta} -N 100 -p 12345 -s ${fasta}.treeable -x 12345 2>&1 > RAxML_${fasta%%.vcf.fasta}.log || touch RAxML_${fasta%%.vcf.fasta}.ERROR
+
+# This can go a lot faster with openmpi
+mpirun -n 6 raxmlHPC-MPI -f a -m ASC_GTRGAMMA --asc-corr=lewis -n ${fasta%%.vcf.fasta} -N 100 -p 12345 -s ${fasta}.treeable -x 12345 2>&1 > RAxML_${fasta%%.vcf.fasta}.log || touch RAxML_${fasta%%.vcf.fasta}.ERROR
+
+
+#for file in RAxML_bestTree.${fasta%%.vcf.fasta}; do
+for file in RAxML_bestTree.${fasta%%.vcf.fasta} RAxML_bipartitions.${fasta%%.vcf.fasta}; do
 	# Put single quotes around each taxon
 	tree=$(< $file sed -E "s/([^(),']+):/'\1':/g")
 	# Count the number of taxa
@@ -92,7 +100,7 @@ begin figtree;
 	set branchLabels.isShown=false;
 	set branchLabels.significantDigits=4;
 	set layout.expansion=0;
-	set layout.layoutType="RECTILINEAR";
+	set layout.layoutType="RADIAL";
 	set layout.zoom=0;
 	set legend.attribute=null;
 	set legend.fontSize=10.0;

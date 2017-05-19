@@ -6,7 +6,7 @@ cultivar_to_names="s/IRIS_313-8326/JC1/g
 s/IRIS_313-11737/CHUNDI/g
 s/IRIS_313-10603/UCP122/g
 s/IRIS_313-11802/JIECAOZHAN/g
-s/CX357/CX357/g
+s/CX357/PSBRC80/g
 s/IRIS_313-11643/NCS603B/g
 s/IRIS_313-11723/DISSIGBE/g
 s/IRIS_313-11794/TSIPALA/g
@@ -27,7 +27,7 @@ colorize="s/(JC1[^']*)'/\1\'[\&!color=#ffdf00\]/g
 s/(CHUNDI[^']*)'/\1\'[\&!color=#af00d7\]/g
 s/(UCP122[^']*)'/\1\'[\&!color=#af00d7\]/g
 s/(JIECAOZHAN[^']*)'/\1\'[\&!color=#0000af\]/g
-s/(CX357[^']*)'/\1\'[\&!color=#0000af\]/g
+s/(PSBRC80[^']*)'/\1\'[\&!color=#0000af\]/g
 s/(NCS603B[^']*)'/\1\'[\&!color=#0000af\]/g
 s/(DISSIGBE[^']*)'/\1\'[\&!color=#005fff\]/g
 s/(TSIPALA[^']*)'/\1\'[\&!color=#005fff\]/g

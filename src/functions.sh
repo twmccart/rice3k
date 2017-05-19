@@ -68,7 +68,7 @@ function clean_vcf() {
 	cultivar=$1
 	bgzip ${cultivar}.full.vcf
 	tabix ${cultivar}.full.vcf.gz
-	bcftools view --exclude-uncalled --exclude-types 'indels' -O z -o ${cultivar}.cleaned.vcf.gz ${cultivar}.full.vcf
+	bcftools view --exclude-uncalled --exclude-types 'indels' --genotype ^het -O z -o ${cultivar}.cleaned.vcf.gz ${cultivar}.full.vcf
 	tabix ${cultivar}.cleaned.vcf.gz
 }
 
@@ -85,9 +85,9 @@ function clean_and_split_vcf() {
 
 function merge() {
 	chromosome=$1
-	vcf-merge *${chromosome}*.vcf.gz > ${chromosome}.merge.vcf
+	vcf-merge *${chromosome}*.vcf.gz > ../merges/${chromosome}.merge.vcf
 	# The awk command filters any Multiple Nucleotide Polymorphisms, which are apparently a thing
-	< ${chromosome}.merge.vcf bcftools view --exclude-uncalled --exclude-types 'indels' --min-ac 1 --max-af 0.99 --genotype ^miss -O v | awk ' /^#/ {print} length($4) == 1 {print} ' > ${chromosome}.merge.cleaned.vcf
+	< ../merges/${chromosome}.merge.vcf bcftools view --exclude-uncalled --exclude-types 'indels' --min-ac 1 --max-af 0.99 --genotype ^miss -O v | awk ' /^#/ {print} length($4) == 1 {print} ' > ../merges/${chromosome}.merge.cleaned.vcf
 }
 
 function refilter_merged() {

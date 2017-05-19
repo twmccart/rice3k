@@ -55,10 +55,10 @@ rm -f RAxML*${fasta%%.vcf.fasta}*
 #raxmlHPC -f d -m ASC_GTRGAMMA --asc-corr=lewis -n ${fasta%%.vcf.fasta} -p 12345 -s ${fasta}.treeable 2>&1 > RAxML_${fasta%%.vcf.fasta}.log || touch RAxML_${fasta%%.vcf.fasta}.ERROR
 
 # -f a means bootstrap analysis and bestTree in one run.
-raxmlHPC -f a -m ASC_GTRGAMMA --asc-corr=lewis -n ${fasta%%.vcf.fasta} -N 100 -p 12345 -s ${fasta}.treeable -x 12345 2>&1 > RAxML_${fasta%%.vcf.fasta}.log || touch RAxML_${fasta%%.vcf.fasta}.ERROR
+#raxmlHPC -f a -m ASC_GTRGAMMA --asc-corr=lewis -n ${fasta%%.vcf.fasta} -N 100 -p 12345 -s ${fasta}.treeable -x 12345 2>&1 > RAxML_${fasta%%.vcf.fasta}.log || touch RAxML_${fasta%%.vcf.fasta}.ERROR
 
 # This can go a lot faster with openmpi
-#mpirun -n 6 raxmlHPC-MPI -f a -m ASC_GTRGAMMA --asc-corr=lewis -n ${fasta%%.vcf.fasta} -N 100 -p 12345 -s ${fasta}.treeable -x 12345 2>&1 > RAxML_${fasta%%.vcf.fasta}.log || touch RAxML_${fasta%%.vcf.fasta}.ERROR
+mpirun -n 6 raxmlHPC-MPI-AVX -f a -m ASC_GTRGAMMA --asc-corr=lewis -n ${fasta%%.vcf.fasta} -N 100 -p 12345 -s ${fasta}.treeable -x 12345 2>&1 > RAxML_${fasta%%.vcf.fasta}.log || touch RAxML_${fasta%%.vcf.fasta}.ERROR
 
 
 #for file in RAxML_bestTree.${fasta%%.vcf.fasta}; do

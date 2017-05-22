@@ -1,0 +1,1 @@
+for file in *realigned.bam; do echo ${file%.realigned.bam} >> mappedreadcounts.txt; samtools view -F 0x4 ${file} | cut -f 1 | sort | uniq | wc -l >> mappedreadcounts.txt; done

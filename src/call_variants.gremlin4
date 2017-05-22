@@ -1,6 +1,5 @@
 #!/bin/bash
 
-#PBS -q preempt
 #PBS -l nodes=1:ppn=1,walltime=24:00:00,vmem=10gb
 #PBS -k o
 #PBS -j oe
@@ -11,7 +10,7 @@ accession=$1
 
 # load modules for karst
 
-root="scratch/twmccart/3KRiceReads/20cultivarphylogeny/VCFs"
+root="/DATA/GROUP/twmccart/20cultivarVCFs/"
 
 cd $root
 

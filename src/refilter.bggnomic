@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-root="/scratch/twmccart/VCFs"
+root="/DATA/GROUP/twmccart/20cultivarVCFs/"
 
 cd $root
 

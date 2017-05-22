@@ -1,6 +1,5 @@
 #!/bin/bash
 
-#PBS -q preempt
 #PBS -l nodes=1:ppn=1,walltime=24:00:00,vmem=10gb
 #PBS -k o
 #PBS -j oe
@@ -11,7 +10,7 @@ accession=$1
 
 # load modules for karst
 
-root="/N/dc2/scratch/twmccart/3KRiceReads/20cultivarphylogeny/VCFs"
+root="/DATA/GROUP/twmccart/20cultivarVCFs/"
 
 cd $root
 
@@ -22,10 +21,7 @@ cd $calls
 #module load java tabix vcftools/0.1.14
 
 full_genotype $accession
-echo "got full vcf, removing indels now"
-
-vcftools --vcf ${accession}.full.vcf --remove-indels --recode --stdout | vcf-sort | bgzip -c > ${accession}.full.noindels.sorted.vcf.gz
-echo "sorted, indexing now"
-
-tabix -p vcf ${accession}.full.noindels.sorted.vcf.gz
-echo "indexing complete"
+echo
+echo "got full vcf, cleaning now"
+echo
+clean_and_split_vcf $accession

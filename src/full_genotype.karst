@@ -10,7 +10,7 @@ accession=$1
 
 # load modules for karst
 
-root="/N/dc2/scratch/twmccart/3KRiceReads/20cultivarphylogeny/VCFs"
+root="/N/dc2/scratch/twmccart/VCFs"
 
 cd $root
 

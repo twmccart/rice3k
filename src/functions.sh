@@ -68,7 +68,7 @@ function clean_vcf() {
 	cultivar=$1
 	bgzip ${cultivar}.full.vcf
 	tabix ${cultivar}.full.vcf.gz
-	bcftools view --exclude-uncalled --exclude-types 'indels' --genotype ^het -O z -o ${cultivar}.cleaned.vcf.gz ${cultivar}.full.vcf
+	bcftools view --exclude-uncalled --exclude-types 'indels' --genotype ^het -O z ${cultivar}.full.vcf | awk ' /^#/ {print} length($4) == 1 {print} ' > ${cultivar}.noindels_hets_mnps.vcf.gz
 	tabix ${cultivar}.cleaned.vcf.gz
 }
 
@@ -77,7 +77,7 @@ function clean_and_split_vcf() {
 	bgzip ${cultivar}.full.vcf
 	tabix -f ${cultivar}.full.vcf.gz
 	for chromosome in chr{01,02,03,04,05,06,07,08,09,10,11,12}; do (
-		bcftools view --exclude-uncalled --exclude-types 'indels' --genotype ^het -r ${chromosome} -O z -o ../split/${cultivar}.${chromosome}.cleaned.vcf.gz ${cultivar}.full.vcf.gz ; tabix ../split/${cultivar}.${chromosome}.cleaned.vcf.gz) &
+		bcftools view --exclude-uncalled --exclude-types 'indels' --genotype ^het -r ${chromosome} -O z ${cultivar}.full.vcf.gz | awk ' /^#/ {print} length($4) == 1 {print} ' > ../split/${cultivar}.${chromosome}.noindels_hets_mnps.vcf.gz; tabix ../split/${cultivar}.${chromosome}.noindels_hets_mnps.vcf.gz) &
 	done
 	wait
 	echo "SPLIT IS FINISHED"

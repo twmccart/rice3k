@@ -5,7 +5,7 @@ root="/DATA/GROUP/twmccart/20cultivarVCFs/"
 
 cd $root
 
-source $root/src/environment
+source $root/src/environment.sh
 
 cd $merges
 

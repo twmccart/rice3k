@@ -1,0 +1,8 @@
+#!/bin/bash
+set -euo pipefail
+
+file=$1
+
+reference="/DATA/GROUP/twmccart/20cultivarVCFs/reference"
+
+< $file vcf-annotate -a ${reference}/20cultivars.genes.gz -c CHROM,FROM,TO,GN -d ${reference}/descriptions.txt > ${file%.vcf}.annotated.vcf

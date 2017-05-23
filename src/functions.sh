@@ -65,10 +65,10 @@ function call_variants_range() {
 
 
 function clean_vcf() {
-	cultivar=$1
-	bgzip ${cultivar}.full.vcf
-	tabix ${cultivar}.full.vcf.gz
-	bcftools view --exclude-uncalled --exclude-types 'indels' --genotype ^het -O v ${cultivar}.full.vcf | awk ' /^#/ {print} length($4) == 1 {print} ' > ${cultivar}.noindels_hets_mnps.vcf
+	vcf=$1
+	bgzip ${vcf}
+	tabix ${vcf}.gz
+	bcftools view --exclude-uncalled --exclude-types 'indels' --genotype ^het -O v ${vcf} | awk ' /^#/ {print} length($4) == 1 {print} ' > ${vcf%.vcf}.noindels_hets_mnps.vcf
 	#tabix ${cultivar}.cleaned.vcf.gz
 }
 

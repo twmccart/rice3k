@@ -20,6 +20,6 @@ pushd $root
 
 source $root/src/environment.sh
 
-popd $calls
+popd
 
 clean_vcf $vcf

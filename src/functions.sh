@@ -66,7 +66,7 @@ function call_variants_range() {
 
 function clean_vcf() {
 	vcf=$1
-	bgzip -q ${vcf}
+	bgzip ${vcf}
 	tabix ${vcf}.gz
 	bcftools view --exclude-uncalled --exclude-types 'indels' --genotype ^het -O v ${vcf}.gz | awk ' /^#/ {print} length($4) == 1 {print} ' > ${vcf%.vcf}.noindels_hets_mnps.vcf
 	#tabix ${cultivar}.cleaned.vcf.gz

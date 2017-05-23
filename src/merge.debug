@@ -11,7 +11,7 @@ chromosome=$1
 # load modules for karst
 module load bcftools vcftools/0.1.13 tabix
 
-root="/N/dc2/scratch/twmccart/3KRiceReads/20cultivarphylogeny/VCFs"
+root="/N/dc2/scratch/twmccart/VCFs"
 
 cd $root
 

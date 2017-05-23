@@ -14,7 +14,7 @@ root="/N/dc2/scratch/twmccart/VCFs"
 
 cd $root
 
-source $root/src/environment
+source $root/src/environment.sh
 
 cd $calls
 

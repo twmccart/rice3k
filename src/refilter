@@ -1,16 +1,13 @@
 #!/bin/bash
-
-#PBS -l nodes=1:ppn=12,walltime=0:15:00,vmem=20gb
+#PBS -l nodes=1:ppn=1,walltime=0:20:00,vmem=5gb
 #PBS -k o
 #PBS -j oe
 #PBS -M twmccart@iu.edu
 #PBS -m abe
 
-accession=$1
-
 if [[ "$0" =~ "karst" ]]; then
 	# load modules for karst
-	module load tabix bcftools
+	module load bcftools vcftools/0.1.13 tabix
 	root="/N/dc2/scratch/twmccart/VCFs"
 else
 	root="/DATA/GROUP/twmccart/20cultivarVCFs/"
@@ -20,6 +17,11 @@ cd $root
 
 source $root/src/environment.sh
 
-cd $calls
+cd $merges
 
-clean_and_split_vcf $accession
+#for file in *.merge.cleaned.vcf; do
+#	refilter_merged $file &
+#done
+
+file=$1
+refilter_merged $file

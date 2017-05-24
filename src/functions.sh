@@ -10,7 +10,7 @@ function call_variants() {
 	CULT=$1
 
 	$gatk -T HaplotypeCaller \
-		-R $reference \
+		-R ${reference}/all.chrs.fix.fasta \
 		-I $maps/${CULT}.realigned.bam \
 		-ERC GVCF \
 		-o $calls/${CULT}.g.vcf \
@@ -24,7 +24,7 @@ function genotype() {
 	CULT=$1
 
 	$gatk -T GenotypeGVCFs \
-		-R $reference \
+		-R ${reference}/all.chrs.fix.fasta \
 		-V $calls/${CULT}.g.vcf \
 		-o $calls/${CULT}.vcf \
 		-nt 24
@@ -37,7 +37,7 @@ function full_genotype() {
 	CULT=$1
 
 	$gatk -T GenotypeGVCFs \
-		-R $reference \
+		-R ${reference}/all.chrs.fix.fasta \
 		-V $calls/${CULT}.g.vcf \
 		-allSites \
 		-o $calls/${CULT}.full.vcf \
@@ -58,7 +58,7 @@ function call_variants_range() {
 
 	$gatk -T HaplotypeCaller \
 		-L $LOCI \
-		-R $reference \
+		-R ${reference}/all.chrs.fix.fasta \
 		-I $maps/${CULT}.realigned.bam \
 		-ERC GVCF \
 		-o $calls/${CULT}-${LOCI}.g.vcf
@@ -67,16 +67,14 @@ function call_variants_range() {
 
 function clean_vcf() {
 	vcf=$1
-	bgzip ${vcf}
-	tabix ${vcf}.gz
+	bgzip ${vcf} && tabix ${vcf}.gz
 	bcftools view --exclude-uncalled --exclude-types 'indels' --genotype ^het -O v ${vcf}.gz | awk ' /^#/ {print} length($4) == 1 {print} ' > ${vcf%.vcf}.noindels_hets_mnps.vcf
 	#tabix ${cultivar}.cleaned.vcf.gz
 }
 
 function clean_and_split_vcf() {
 	cultivar=$1
-	bgzip ${cultivar}.full.vcf
-	tabix -f ${cultivar}.full.vcf.gz
+	bgzip ${cultivar}.full.vcf && tabix -f ${cultivar}.full.vcf.gz
 	for chromosome in chr{01,02,03,04,05,06,07,08,09,10,11,12}; do (
 		bcftools view --exclude-uncalled --exclude-types 'indels' --genotype ^het -r ${chromosome} -O v ${cultivar}.full.vcf.gz | awk ' /^#/ {print} length($4) == 1 {print} ' | bgzip -c > ../split/${cultivar}.${chromosome}.noindels_hets_mnps.vcf.gz; tabix ../split/${cultivar}.${chromosome}.noindels_hets_mnps.vcf.gz) &
 	done
@@ -99,3 +97,16 @@ function refilter_merged() {
 	< $file bcftools view --min-ac 5 -O v > ${file%.vcf}.min5.vcf
 	< $file bcftools view --min-ac 8 -O v > ${file%.vcf}.min8.vcf
 }
+
+function only_SNPs() {
+	cultivar=$1
+	bgzip ${cultivar}.full.vcf && tabix -f ${cultivar}.full.vcf.gz
+	< ${cultivar}.full.vcf.gz bcftools view --exclude-uncalled --types 'snps' --genotype ^het -O v > ${cultivar}.onlySNPs.vcf
+}
+
+function annotate_VCF() {
+	# Input file must be VCF, not VCF.gz
+	file=$1
+	< $file vcf-annotate -a ${reference}/ricegenepromoterVCFannotations.gz -c CHROM,FROM,TO,FE,GN -d ${reference}/descriptions.txt > ${file%.vcf}.annotated.vcf
+}
+

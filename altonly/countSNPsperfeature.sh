@@ -2,8 +2,8 @@
 set -euo pipefail
 
 file=$1
-rm ${file%.vcf}.promoterSNPcount.tsv
-rm ${file%.vcf}.geneSNPcount.tsv
+rm -f ${file%.vcf}.promoterSNPcount.tsv
+rm -f ${file%.vcf}.geneSNPcount.tsv
 
 for promoter in promoter{0..32914}; do
     echo "$promoter $(grep -c "$promoter[,;	]" $file)" >> ${file%.vcf}.promoterSNPcount.tsv

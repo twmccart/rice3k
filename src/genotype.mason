@@ -21,8 +21,8 @@ source $root/src/environment.sh
 
 cd $calls
 
-full_genotype $accession
+genotype $accession
 echo
-echo "got full vcf, cleaning now"
+echo "got vcf, cleaning now"
 echo
-clean_and_split_vcf $accession
+clean_vcf $accession

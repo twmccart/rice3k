@@ -5,4 +5,4 @@ file=$1
 
 reference="/N/dc2/scratch/twmccart/VCFs/reference"
 
-< $file vcf-annotate -a ${reference}/20cultivars.genes.gz -c CHROM,FROM,TO,GN -d ${reference}/descriptions.txt > ${file%.vcf}.annotated.vcf
+< $file vcf-annotate -a ${reference}/ricegenepromoterVCFannotations.gz -c CHROM,FROM,TO,FE,GN -d ${reference}/descriptions.txt > ${file%.vcf}.annotated.vcf

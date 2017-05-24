@@ -26,7 +26,8 @@ function genotype() {
 	$gatk -T GenotypeGVCFs \
 		-R $reference \
 		-V $calls/${CULT}.g.vcf \
-		-o $calls/${CULT}.vcf
+		-o $calls/${CULT}.vcf \
+		-nt 24
 }
 
 function full_genotype() {

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export project_root=$(pwd)
-export reference=${project_root}/reference/all.chrs.fix.fasta
+export reference=${project_root}/reference
 export reads=${project_root}/reads
 export maps=${project_root}/maps
 export calls=${project_root}/calls

@@ -21,5 +21,5 @@ source $root/src/environment.sh
 cd $calls
 
 only_SNPs $cultivar
-annotate_VCF ${cultivar}.onlySNPs.vcf
-bgzip ${cultivar}.onlySNPs.vcf
+annotate_VCF ../SNPsonly/${cultivar}.onlySNPs.vcf
+bgzip ../SNPsonly/${cultivar}.onlySNPs.vcf

@@ -101,7 +101,7 @@ function refilter_merged() {
 function only_SNPs() {
 	cultivar=$1
 	bgzip ${cultivar}.full.vcf && tabix -f ${cultivar}.full.vcf.gz
-	< ${cultivar}.full.vcf.gz bcftools view --exclude-uncalled --types 'snps' --genotype ^het -O v > ${cultivar}.onlySNPs.vcf
+	< ${cultivar}.full.vcf.gz bcftools view --exclude-uncalled --types 'snps' --genotype ^het -O v > ../SNPsonly/${cultivar}.onlySNPs.vcf
 }
 
 function annotate_VCF() {

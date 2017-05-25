@@ -1,6 +1,6 @@
 #!/bin/awk -f
 
-' BEGIN {
+BEGIN {
 	for (i=0; i<=32914; i++) {
 		promoters["promoter" i]=0
 	}
@@ -20,4 +20,4 @@ END {
 		sum+=promoters[promoter]
 	};
 	print "#average of 32915 promoters:", sum/32915
-}'
+}

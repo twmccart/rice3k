@@ -15,8 +15,9 @@ BEGIN {
 	}
 }
 END {
+	command="sort -V" ;
 	for (promoter in promoters) {
-		print promoter, promoters[promoter];
+		print promoter, promoters[promoter] | command;
 		sum+=promoters[promoter]
 	};
 	print "#average of 32915 promoters:", sum/32915

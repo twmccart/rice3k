@@ -1,6 +1,6 @@
 #!/bin/awk -f
 
-' BEGIN {
+BEGIN {
 	for (i=0; i<=32914; i++) {
 		genes["gene" i]=0
 	}
@@ -20,4 +20,4 @@ END {
 		sum+=genes[gene]
 	};
 #	print "#average of 32915 genes:", sum/32915
-}'
+}

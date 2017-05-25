@@ -15,8 +15,9 @@ BEGIN {
 	}
 }
 END {
+	command="sort -V" ;
 	for (gene in genes) {
-		print gene, genes[gene];
+		print gene, genes[gene] | command;
 		sum+=genes[gene]
 	};
 #	print "#average of 32915 genes:", sum/32915

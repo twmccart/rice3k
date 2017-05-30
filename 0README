@@ -6,9 +6,7 @@ filename=$1
 cultivarlist=$(cat $filename)
 
 # gremlin4
-root="/scratch/twmccart/3KRiceReads/20cultivarphylogeny/VCFs"
-# bggnomic
-#root="/scratch/VCFs"
+root="/DATA/GROUP/twmccart/20cultivarVCFs"
 # Karst
 #root="/N/dc2/scratch/twmccart/3KRiceReads/20cultivarphylogeny/VCFs"
 

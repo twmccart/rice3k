@@ -107,6 +107,7 @@ function only_SNPs() {
 function annotate_VCF() {
 	# Input file must be VCF, not VCF.gz
 	file=$1
-	< $file vcf-annotate -a ${reference}/ricegenepromoterVCFannotations.gz -c CHROM,FROM,TO,FE,GN -d ${reference}/descriptions.txt > ${file%.vcf}.annotated.vcf
+#	< $file vcf-annotate -a ${reference}/ricegenepromoterVCFannotations.gz -c CHROM,FROM,TO,FE,GN -d ${reference}/descriptions.txt > ${file%.vcf}.annotated.vcf
+	< $file vcf-annotate -a ${reference}/riceexonVCFannotations.gz -c CHROM,FROM,TO,EX -d ${reference}/descriptions.txt > ${file%.vcf}.annotated.vcf
 }
 

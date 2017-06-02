@@ -1,3 +1,4 @@
+*.tsv
 *.xls
 altonly/
 alignments/

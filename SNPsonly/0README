@@ -7,4 +7,4 @@ for file in *.geneSNPcounts.tsv; do echo -n "${file%%.*} " >> averageSNPspergene
 
 for file in *.promoterSNPcounts.tsv; do echo -n "${file%%.*} " >> averageSNPsperpromoter.tsv; tail -n 1 $file >> averageSNPsperpromoter.tsv; done
 
-for file in *.geneSNPcounts.tsv; do awk 'FNR==NR{lengtharray[$4]=$3-$2+1;next}{normal=$2/lengtharray[$1]}{sum+=normal}{print $1 FS normal} END {print "average="sum/FNR}' <(gunzip -c ../reference/20cultivars.genes.gz) $file > ${file%.geneSNPcount.tsv}.normalizedgeneSNPcount.tsv; done
+for file in *.geneSNPcounts.tsv; do awk 'FNR==NR{lengtharray[$4]=$3-$2+1;next}{normal=$2/lengtharray[$1]}{sum+=normal}{print $1 FS normal} END {print "#average="sum/FNR}' <(gunzip -c ../reference/ricegenepromoterVCFannotations.gz) $file > ${file%.geneSNPcount.tsv}.normalizedgeneSNPcount.tsv; done

@@ -11,7 +11,7 @@ export split=${project_root}/split
 export merges=${project_root}/merges
 export alignments=${project_root}/alignments
 
-mkdir -p $reads $maps $calls $log $merges $split $alignments
+mkdir -p $reference $reads $maps $calls $log $merges $split $alignments
 
 export picard="java -jar $src/picard.jar"
 export gatk="java -jar $src/GenomeAnalysisTK.jar"

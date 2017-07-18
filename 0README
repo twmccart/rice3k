@@ -5,15 +5,11 @@ set -euo pipefail
 filename=$1
 cultivarlist=$(cat $filename)
 
-# gremlin4
-root="/DATA/GROUP/twmccart/20cultivarVCFs"
-# Karst
-#root="/N/dc2/scratch/twmccart/3KRiceReads/20cultivarphylogeny/VCFs"
-
+root="$(pwd)"
 
 
 # Requires
-#module load samtools/1.3 java/1.8.0_74 tabix/0.2.6 bcftools/1.3 vcftools/0.1.13 python/2.7.3
+#module load samtools/1.3 java/1.8.0_40 tabix/0.2.6 bcftools/1.3 vcftools/0.1.13 python/2.7.3
 
 cd $root
 source $root/src/environment
@@ -55,7 +51,7 @@ cd $merges
 vcf-concat chr*.cleaned.vcf.gz > ${filename%.*}.merge.cleaned.vcf
 
 # To look at SNPs that are present to a greater degree in the genome, a refiltering step produces additional vcf files that contain sites that have varying minimum numbers of SNPs.
-refilter_merged ${filename%.*}.merge.cleaned.vcf
+#refilter_merged ${filename%.*}.merge.cleaned.vcf
 
 # In order to make trees, random sites from the VCF are selected and turned into a FASTA alignment.
 # RAxML was used to generate trees from several alignments, all of which looked similar.

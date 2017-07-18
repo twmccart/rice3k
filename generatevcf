@@ -1,0 +1,47 @@
+#!/bin/bash
+set -euo pipefail
+## This script takes as its input argument the accession of a cultivar from the
+## 3K Rice Genome project and produces a VCF file containing all of the called
+## sites from that cultivar. It also produces VCF files for each chromosome of
+## the cultivar, with indels, Multiple Nucleotide Polymorphisms, and uncalled or
+## heterozygous sites removed.
+
+
+cultivar=$1
+
+root="$(dirname "$(readlink -f "$0")")"
+
+
+# Requires
+#module load samtools/1.3 java/1.8.0_40 tabix/0.2.6 bcftools/1.3 vcftools/0.1.13 python/2.7.3
+
+cd $root
+source $root/src/environment
+
+# Get reference genome
+if [[ ! -e ${reference}/IRGSP-1.0_genome.fasta.fai ]]; then
+	wget --directory-prefix "${reference}" http://rapdb.dna.affrc.go.jp/download/archive/irgsp1/IRGSP-1.0_genome.fasta.gz
+	gunzip IRGSP-1.0_genome.fasta.gz
+	samtools faidx IRGSP-1.0_genome.fasta
+
+
+# BAM files of sequence read mapping
+# Murat figured out how to download these from a site that isn't internet visible.
+# https://aws.amazon.com/public-datasets/3000-rice-genome/
+cd $maps
+wget https://s3.amazonaws.com/3kricegenome/Nipponbare/${cultivar}.realigned.bam
+samtools index ${cultivar}.realigned.bam
+
+# The GATK tool Haplotype Caller is used to compare the bam file with the reference genome and generate a gvcf file
+cd $calls
+call_variants $cultivar
+
+# The GATK tool GenotypeGVCFs takes the gvcf file and produces a normal vcf.
+# The option -allSites is necessary for our purposes, so that called sites that match the reference will be able to be compared to SNPs in other cultivars.
+full_genotype $cultivar
+
+# Before merging VCFs from different cultivars, it is useful to remove indels and uncalled or heterozygous sites with "bcftools view".
+# It is also expedient to split the VCF by chromosome so that merges can be performed with some degree of parallelism.
+clean_and_split_vcf $cultivar
+
+

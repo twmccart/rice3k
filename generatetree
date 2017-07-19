@@ -22,6 +22,7 @@ for cultivar in $cultivarlist; do
 		error="true"
 	fi
 done
+
 if [[ $error == "true" ]]; then
 	exit 1
 fi

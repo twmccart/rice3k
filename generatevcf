@@ -18,11 +18,11 @@ source $root/src/environment.sh
 unset pipefail
 unset error
 
-samtools --help > /dev/null || module load samtools/1.3 || echo "could not load samtools" >&2 && error="true"
+samtools --help 2>&1 > /dev/null || module load samtools/1.3 || echo "could not load samtools" >&2 && error="true"
 
-bcftools --help > /dev/null || module load bcftools/1.3 || echo "could not load bcftools" >&2 && error="true"
+bcftools --help 2>&1 > /dev/null || module load bcftools/1.3 || echo "could not load bcftools" >&2 && error="true"
 
-tabix --help 2> /dev/null
+tabix --help 2>&1 > /dev/null
 if [[ "$?" != "1" ]]; then
 	module load tabix
 	if [[ "$?" != "1" ]]; then
@@ -31,11 +31,11 @@ if [[ "$?" != "1" ]]; then
 	fi
 fi
 
-vcftools --help > /dev/null || module load vcftools/0.1.13 || echo "could not load vcftools" >&2 && error="true"
+vcftools --help 2>&1 > /dev/null || module load vcftools/0.1.13 || echo "could not load vcftools" >&2 && error="true"
 
-java -version > /dev/null || module load java || echo "could not load Java" >&2 && error="true"
+java -version 2>&1 > /dev/null || module load java || echo "could not load Java" >&2 && error="true"
 
-python --version > /dev/null || module load python/2.7.3 || echo "could not load Python 2.7" >&2 && error="true"
+python --version 2>&1 > /dev/null || module load python/2.7.3 || echo "could not load Python 2.7" >&2 && error="true"
 
 if [[ $error == "true" ]]; then
 	exit 1

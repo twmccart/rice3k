@@ -1,9 +1,22 @@
+# Create work environment
+
+root="$(dirname "$(readlink -f "$0")")"
+cd $root
+
+source $root/src/environment
 
 # Download reference sequence
-mkdir reference
+
+cd $reference
+
 wget --directory-prefix "reference" http://rapdb.dna.affrc.go.jp/download/archive/irgsp1/IRGSP-1.0_genome.fasta.gz
 gunzip IRGSP-1.0_genome.fasta.gz
 samtools faidx IRGSP-1.0_genome.fasta
 
 # Install GATK
- #TODO
+cd $src
+wget --directory-prefix "src" 
+https://software.broadinstitute.org/gatk/download/auth?package=GATK-archive&version=3.6-0-g89b7209
+tar xfj GenomeAnalysisTK-3.6-0-g89b7209.tar.bz2
+
+echo "Installation Complete"

@@ -3,7 +3,7 @@
 root="$(dirname "$(readlink -f "$0")")"
 cd $root
 
-source $root/src/environment
+source $root/src/environment.sh
 
 # Download reference sequence
 
@@ -15,7 +15,7 @@ samtools faidx IRGSP-1.0_genome.fasta
 
 # Install GATK
 cd $src
-wget --directory-prefix "src" 
+wget --directory-prefix "src"
 https://software.broadinstitute.org/gatk/download/auth?package=GATK-archive&version=3.6-0-g89b7209
 tar xfj GenomeAnalysisTK-3.6-0-g89b7209.tar.bz2
 

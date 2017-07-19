@@ -12,13 +12,13 @@ source $root/src/environment.sh
 
 cd $reference
 
-wget http://rapdb.dna.affrc.go.jp/download/archive/irgsp1/IRGSP-1.0_genome.fasta.gz
+wget "http://rapdb.dna.affrc.go.jp/download/archive/irgsp1/IRGSP-1.0_genome.fasta.gz"
 gunzip IRGSP-1.0_genome.fasta.gz
 samtools faidx IRGSP-1.0_genome.fasta
 
 # Install GATK
 cd $src
-wget https://software.broadinstitute.org/gatk/download/auth?package=GATK-archive&version=3.6-0-g89b7209
-tar xfj GenomeAnalysisTK-3.6-0-g89b7209.tar.bz2
+wget "https://software.broadinstitute.org/gatk/download/auth?package=GATK-archive&version=3.6-0-g89b7209"
+tar -xf GenomeAnalysisTK-3.6-0-g89b7209.tar.bz2
 
 echo "Installation Complete"

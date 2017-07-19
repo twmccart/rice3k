@@ -18,54 +18,54 @@ source $root/src/environment.sh
 unset -euo pipefail
 unset error
 samtools --help > /dev/null
-if ["echo $?" != "0"]; then
+if [[ "$?" != "0" ]]; then
 	module load samtools/1.3
-	if ["echo $?" != "0"]; then
+	if [[ "$?" != "0" ]]; then
 		echo "could not load samtools" >&2
 		error="true"
 	fi
 fi
 
 bcftools --help > /dev/null
-if ["echo $?" != "0"]; then
+if [[ "$?" != "0" ]]; then
 	module load bcftools/1.3
-	if ["echo $?" != "0"]; then
+	if [[ "$?" != "0" ]]; then
 		echo "could not load bcftools" >&2
 		error="true"
 	fi
 fi
 
 tabix --help > /dev/null
-if ["echo $?" != "1"]; then
+if [[ "$?" != "1" ]]; then
 	module load tabix
-	if ["echo $?" != "1"]; then
+	if [[ "$?" != "1" ]]; then
 		echo "could not load tabix" >&2
 		error="true"
 	fi
 fi
 
 vcftools --help > /dev/null
-if ["echo $?" != "0"]; then
+if [[ "$?" != "0" ]]; then
 	module load vcftools/0.1.13
-	if ["echo $?" != "0"]; then
+	if [[ "$?" != "0" ]]; then
 		echo "could not load vcftools" >&2
 		error="true"
 	fi
 fi
 
 java -h > /dev/null
-if ["echo $?" != "0"]; then
+if [[ "$?" != "0" ]]; then
 	module load java
-	if ["echo$?" != "0"]; then
+	if [[ "$?" != "0" ]]; then
 		echo "could not load Java" >&2
 		error="true"
 	fi
 fi
 
 python --version > /dev/null
-if ["echo $?" != "0"]; then
+if [[ "$?" != "0" ]]; then
 	module load python/2.7.3
-	if ["echo $?" != "0"]; then
+	if [[ "$?" != "0" ]]; then
 		echo "could not load Python 2.7" >&2
 		error="true"
 	fi

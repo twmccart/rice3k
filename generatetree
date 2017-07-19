@@ -1,0 +1,9 @@
+#!/bin/bash
+set -euo pipefail
+## This script takes as its input two or more VCF files that contain all called
+## sites in a rice cultivar. It strips out all heterozygous sites, MNPs, and
+## indels and splits the VCFs by chromosome. It then merges the chromosomes in
+## parallel, strips any sites that don't have SNPs, and concatenates them into a
+## new VCF representing the sites with SNPs between them. A subset of these SNPs
+## are chosen at random and used as an alignment from which a maximum-likelihood
+## tree is generated.

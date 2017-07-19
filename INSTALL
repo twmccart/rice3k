@@ -1,0 +1,9 @@
+
+# Download reference sequence
+mkdir reference
+wget --directory-prefix "reference" http://rapdb.dna.affrc.go.jp/download/archive/irgsp1/IRGSP-1.0_genome.fasta.gz
+gunzip IRGSP-1.0_genome.fasta.gz
+samtools faidx IRGSP-1.0_genome.fasta
+
+# Install GATK
+ #TODO

@@ -1,11 +1,15 @@
 #!/bin/bash
 set -euo pipefail
-# Relationships between 20 rice cultivars from the 3K Rice Genome project.
+## This script takes as its input argument the accession of a cultivar from the
+## 3K Rice Genome project and produces a VCF file containing all of the called
+## sites from that cultivar. It also produces VCF files for each chromosome of
+## the cultivar, with indels, Multiple Nucleotide Polymorphisms, and uncalled or
+## heterozygous sites removed.
+
 
 cultivar=$1
 
-
-root="$(pwd)"
+root="$(dirname "$(readlink -f "$0")")"
 
 
 # Requires
@@ -23,7 +27,7 @@ if ["echo $?" != "0"]; then
 	if ["echo $?" != "0"]; then
 		echo "could not load bcftool module"
 fi
-tabix --help 
+tabix --help
 if ["echo $?" != "1"]; then
 	module load tabix
 	if ["echo $?" != "1"]; then
@@ -51,9 +55,16 @@ fi
 cd $root
 source $root/src/environment
 
+# Get reference genome
+if [[ ! -e ${reference}/IRGSP-1.0_genome.fasta.fai ]]; then
+	wget --directory-prefix "${reference}" http://rapdb.dna.affrc.go.jp/download/archive/irgsp1/IRGSP-1.0_genome.fasta.gz
+	gunzip IRGSP-1.0_genome.fasta.gz
+	samtools faidx IRGSP-1.0_genome.fasta
+
 
 # BAM files of sequence read mapping
 # Murat figured out how to download these from a site that isn't internet visible.
+# https://aws.amazon.com/public-datasets/3000-rice-genome/
 cd $maps
 wget https://s3.amazonaws.com/3kricegenome/Nipponbare/${cultivar}.realigned.bam
 samtools index ${cultivar}.realigned.bam

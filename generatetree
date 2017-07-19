@@ -14,7 +14,7 @@ root="$(dirname "$(readlink -f "$0")")"
 cd $root
 source $root/src/environment.sh
 
-unset -euo pipefail
+unset pipefail
 
 bcftools --help > /dev/null
 if [[ "$?" != "0" ]]; then

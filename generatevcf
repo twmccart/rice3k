@@ -53,11 +53,11 @@ if ["echo $?" != "0"]; then
 		echo "could not load python 2.7.3"
 fi
 
-# Get reference genome
+# check reference genome
 if [[ ! -e ${reference}/IRGSP-1.0_genome.fasta.fai ]]; then
-	wget --directory-prefix "${reference}" http://rapdb.dna.affrc.go.jp/download/archive/irgsp1/IRGSP-1.0_genome.fasta.gz
-	gunzip IRGSP-1.0_genome.fasta.gz
-	samtools faidx IRGSP-1.0_genome.fasta
+	echo "You need to run INSTALL script" >&2
+	exit 1
+fi
 
 
 # BAM files of sequence read mapping

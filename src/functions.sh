@@ -4,43 +4,40 @@
 # function that will generate the gvcf file for a given cultivar
 
 function call_variants() {
-	which java
-	echo $gatk
+	#echo $gatk
 
-	CULT=$1
+	cultivar=$1
 
 	$gatk -T HaplotypeCaller \
 		-R ${reference}/all.chrs.fix.fasta \
-		-I $maps/${CULT}.realigned.bam \
+		-I $maps/${cultivar}.realigned.bam \
 		-ERC GVCF \
-		-o $calls/${CULT}.g.vcf \
+		-o $calls/${cultivar}.g.vcf \
 		-nct 8
 }
 
 function genotype() {
-	which java
 	echo $gatk
 
-	CULT=$1
+	cultivar=$1
 
 	$gatk -T GenotypeGVCFs \
 		-R ${reference}/all.chrs.fix.fasta \
-		-V $calls/${CULT}.g.vcf \
-		-o $calls/${CULT}.vcf \
+		-V $calls/${cultivar}.g.vcf \
+		-o $calls/${cultivar}.vcf \
 		-nt 24
 }
 
 function full_genotype() {
-	which java
 	echo $gatk
 
-	CULT=$1
+	cultivar=$1
 
 	$gatk -T GenotypeGVCFs \
 		-R ${reference}/all.chrs.fix.fasta \
-		-V $calls/${CULT}.g.vcf \
+		-V $calls/${cultivar}.g.vcf \
 		-allSites \
-		-o $calls/${CULT}.full.vcf \
+		-o $calls/${cultivar}.full.vcf \
 		-nt 24
 }
 
@@ -68,21 +65,20 @@ function call_variants_range() {
 function clean_vcf() {
 	vcf=$1
 	bgzip ${vcf} && tabix ${vcf}.gz
-	bcftools view --exclude-uncalled --exclude-types 'indels' --genotype ^het -O v ${vcf}.gz | awk ' /^#/ {print} length($4) == 1 {print} ' > ${vcf%.vcf}.noindels_hets_mnps.vcf
-	#tabix ${cultivar}.cleaned.vcf.gz
+	bcftools view --exclude-uncalled --exclude-types 'indels' --genotype ^het -O v ${vcf}.gz | awk ' /^#/ {print} length($4) == 1 {print} ' > ${vcf%.vcf}.noindels_nohets_nomnps.vcf
 }
 
 function clean_and_split_vcf() {
 	cultivar=$1
 	bgzip ${cultivar}.full.vcf && tabix -f ${cultivar}.full.vcf.gz
 	for chromosome in chr{01,02,03,04,05,06,07,08,09,10,11,12}; do (
-		bcftools view --exclude-uncalled --exclude-types 'indels' --genotype ^het -r ${chromosome} -O v ${cultivar}.full.vcf.gz | awk ' /^#/ {print} length($4) == 1 {print} ' | bgzip -c > ../split/${cultivar}.${chromosome}.noindels_hets_mnps.vcf.gz; tabix ../split/${cultivar}.${chromosome}.noindels_hets_mnps.vcf.gz) &
+		bcftools view --exclude-uncalled --exclude-types 'indels' --genotype ^het -r ${chromosome} -O v ${cultivar}.full.vcf.gz | awk ' /^#/ {print} length($4) == 1 {print} ' | bgzip -c > ../split/${cultivar}.${chromosome}.noindels_nohets_nomnps.vcf.gz; tabix ../split/${cultivar}.${chromosome}.noindels_nohets_nomnps.vcf.gz) &
 	done
 	wait
 	echo "SPLIT IS FINISHED"
 }
 
-function merge() {
+function merge_chromosome() {
 	chromosome=$1
 	vcf-merge *${chromosome}*.vcf.gz > ../merges/${chromosome}.merge.vcf
 	# The awk command filters any Multiple Nucleotide Polymorphisms, which are apparently a thing

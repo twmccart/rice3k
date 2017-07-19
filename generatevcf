@@ -14,30 +14,31 @@ cd $root
 source $root/src/environment.sh
 
 # Requires
-#module load samtools/1.3 java/1.8.0_40 tabix/0.2.6 bcftools/1.3 vcftools/0.1.13 python/2.7.3
-unset pipefail
+module load samtools/1.3 java/1.8.0_40 tabix/0.2.6 bcftools/1.3 vcftools/0.1.13 python/2.7.3 >/dev/null 2>&1
 unset error
 
-samtools --help >/dev/null 2>&1 || module load samtools/1.3 || (echo "could not load samtools" >&2 && error="true")
 
-bcftools --help >/dev/null 2>&1 || module load bcftools/1.3 || (echo "could not load bcftools" >&2 && error="true")
+samtools --help >/dev/null 2>&1 || (echo "could not load samtools" >&2 && error="true")
 
-#tabix --help >/dev/null 2>&1
-#if [[ "$?" != "1" ]]; then
-	module load tabix
-#	if [[ "$?" != "1" ]]; then
-#		echo "could not load tabix" >&2
-#		error="true"
-#	fi
-#fi
+bcftools --help >/dev/null 2>&1 || (echo "could not load bcftools" >&2 && error="true")
 
-vcftools --help >/dev/null 2>&1 || module load vcftools/0.1.13 || (echo "could not load vcftools" >&2 && error="true")
+set +e
+tabix --help >/dev/null 2>&1
+if [[ "$?" != "1" ]]; then
+	echo "could not load tabix" >&2
+	error="true"
+fi
+set -e
 
-java -version >/dev/null 2>&1 || module load java || (echo "could not load Java" >&2 && error="true")
+vcftools --help >/dev/null 2>&1 || (echo "could not load vcftools" >&2 && error="true")
 
-python --version >/dev/null 2>&1 || module load python/2.7.3 || (echo "could not load Python 2.7" >&2 && error="true")
 
-if [[ $error == "true" ]]; then
+java -version >/dev/null 2>&1 || (echo "could not load Java" >&2 && error="true")
+
+python --version >/dev/null 2>&1 || (echo "could not load Python 2.7" >&2 && error="true")
+
+
+if [[ -n "$error" ]]; then
 	exit 1
 fi
 
@@ -70,5 +71,3 @@ full_genotype $cultivar
 # It is also expedient to split the VCF by chromosome so that merges can be performed with some degree of parallelism.
 # This step is not necessary if a merge is not planned.
 clean_and_split_vcf $cultivar
-
-

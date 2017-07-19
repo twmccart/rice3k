@@ -12,7 +12,7 @@ filename=$1
 cultivarlist=$(cat $filename)
 root="$(dirname "$(readlink -f "$0")")"
 cd $root
-source $root/src/environment
+source $root/src/environment.sh
 
 unset -euo pipefail
 

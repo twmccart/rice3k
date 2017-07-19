@@ -22,11 +22,13 @@ samtools --help >/dev/null 2>&1 || (echo "could not load samtools" >&2 && error=
 
 bcftools --help >/dev/null 2>&1 || (echo "could not load bcftools" >&2 && error="true")
 
+set +e
 tabix --help >/dev/null 2>&1
 if [[ "$?" != "1" ]]; then
 	echo "could not load tabix" >&2
 	error="true"
 fi
+set -e
 
 vcftools --help >/dev/null 2>&1 || (echo "could not load vcftools" >&2 && error="true")
 
@@ -35,7 +37,7 @@ java -version >/dev/null 2>&1 || (echo "could not load Java" >&2 && error="true"
 python --version >/dev/null 2>&1 || (echo "could not load Python 2.7" >&2 && error="true")
 
 
-if [[ $error == "true" ]]; then
+if [[ -n "$error" ]]; then
 	exit 1
 fi
 

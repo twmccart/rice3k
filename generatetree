@@ -63,7 +63,7 @@ fi
 
 
 # If VCFs have not been cleaned and split, warn the user
-unset error
+local error=""
 for cultivar in $cultivarlist; do
 	if [[ ! -e ${split}/${cultivar}.chr12.noindels_nohets_nomnps.vcf.gz.tbi ]]; then
 		echo "You need to run generatevcf on ${cultivar}" >&2

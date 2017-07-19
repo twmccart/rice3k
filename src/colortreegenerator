@@ -2,7 +2,7 @@
 set -euo pipefail
 
 fasta=$1
-cultivar_to_names="s/IRIS_313-8326/JC1/g
+sed_cultivar_to_names="s/IRIS_313-8326/JC1/g
 s/IRIS_313-11737/CHUNDI/g
 s/IRIS_313-10603/UCP122/g
 s/IRIS_313-11802/JIECAOZHAN/g
@@ -23,7 +23,7 @@ s/IRIS_313-15910/CYPRESS/g
 s/IRIS_313-11790/VARIRANGAHY/g
 s/IRIS_313-11924/NAMJAM/g"
 
-colorize="s/(JC1[^']*)'/\1\'[\&!color=#ffdf00\]/g
+sed_colorize="s/(JC1[^']*)'/\1\'[\&!color=#ffdf00\]/g
 s/(CHUNDI[^']*)'/\1\'[\&!color=#af00d7\]/g
 s/(UCP122[^']*)'/\1\'[\&!color=#af00d7\]/g
 s/(JIECAOZHAN[^']*)'/\1\'[\&!color=#0000af\]/g
@@ -44,31 +44,15 @@ s/(CYPRESS[^']*)'/\1\'[\&!color=#800000\]/g
 s/(VARIRANGAHY[^']*)'/\1\'[\&!color=#800000\]/g
 s/(NAMJAM[^']*)'/\1\'[\&!color=#ff0000\]/g"
 
-
-< $fasta sed -e "$cultivar_to_names" | sed 's/ <unknown description>//g' > ${fasta}.treeable
-rm -f RAxML_${fasta%%.vcf.fasta}.ERROR
-rm -f RAxML_${fasta%%.vcf.fasta}.log
-rm -f RAxML*${fasta%%.vcf.fasta}*
-## Model ASC_GTRGAMMA must be used to correct for the fact that we're only using SNPs
-
-# -f d means rapid hill-climbing algorithm
-#raxmlHPC -f d -m ASC_GTRGAMMA --asc-corr=lewis -n ${fasta%%.vcf.fasta} -p 12345 -s ${fasta}.treeable 2>&1 > RAxML_${fasta%%.vcf.fasta}.log || touch RAxML_${fasta%%.vcf.fasta}.ERROR
-
-# -f a means bootstrap analysis and bestTree in one run.
-#raxmlHPC -f a -m ASC_GTRGAMMA --asc-corr=lewis -n ${fasta%%.vcf.fasta} -N 100 -p 12345 -s ${fasta}.treeable -x 12345 2>&1 > RAxML_${fasta%%.vcf.fasta}.log || touch RAxML_${fasta%%.vcf.fasta}.ERROR
-
-# This can go a lot faster with openmpi
-mpirun -n 6 raxmlHPC-MPI-AVX -f a -m ASC_GTRGAMMA --asc-corr=lewis -n ${fasta%%.vcf.fasta} -N 1000 -p 12345 -s ${fasta}.treeable -x 12345 2>&1 > RAxML_${fasta%%.vcf.fasta}.log || touch RAxML_${fasta%%.vcf.fasta}.ERROR
-
-
-#for file in RAxML_bestTree.${fasta%%.vcf.fasta}; do
-for file in RAxML_bestTree.${fasta%%.vcf.fasta} RAxML_bipartitions.${fasta%%.vcf.fasta}; do
-	# Put single quotes around each taxon
-	tree=$(< $file sed -E "s/([^(),']+):/'\1':/g")
-	# Count the number of taxa
-	ntax=$(echo $tree | grep -o -E "'[^(),']+'" | wc -l)
-	# Print out a file in the format FigTree uses
-	cat << EOF > ${file}.figtree
+colorize() = {
+	#for file in RAxML_bestTree.${fasta%%.vcf.fasta}; do
+	for file in RAxML_bestTree.${fasta%%.vcf.fasta} RAxML_bipartitions.${fasta%%.vcf.fasta}; do
+		# Put single quotes around each taxon
+		tree=$(< $file sed -E "s/([^(),']+):/'\1':/g")
+		# Count the number of taxa
+		ntax=$(echo $tree | grep -o -E "'[^(),']+'" | wc -l)
+		# Print out a file in the format FigTree uses
+		cat << EOF > ${file}.figtree
 #NEXUS
 begin taxa;
 	dimensions ntax=${ntax};
@@ -165,5 +149,25 @@ begin figtree;
 end;
 
 EOF
-	< ${file}.figtree sed -r -e "$colorize" > ${file}.figtree.colorized
+		< ${file}.figtree sed -r -e "$sed_colorize" > ${file}.figtree.colorized
     done
+}
+
+< $fasta sed -e "$sed_cultivar_to_names" | sed 's/ <unknown description>//g' > ${fasta}.treeable
+rm -f RAxML_${fasta%%.vcf.fasta}.ERROR
+rm -f RAxML_${fasta%%.vcf.fasta}.log
+rm -f RAxML*${fasta%%.vcf.fasta}*
+
+#TODO turn these into functions
+## Model ASC_GTRGAMMA must be used to correct for the fact that we're only using SNPs
+
+# -f d means rapid hill-climbing algorithm
+#raxmlHPC -f d -m ASC_GTRGAMMA --asc-corr=lewis -n ${fasta%%.vcf.fasta} -p 12345 -s ${fasta}.treeable 2>&1 > RAxML_${fasta%%.vcf.fasta}.log || touch RAxML_${fasta%%.vcf.fasta}.ERROR
+
+# -f a means bootstrap analysis and bestTree in one run.
+#raxmlHPC -f a -m ASC_GTRGAMMA --asc-corr=lewis -n ${fasta%%.vcf.fasta} -N 100 -p 12345 -s ${fasta}.treeable -x 12345 2>&1 > RAxML_${fasta%%.vcf.fasta}.log || touch RAxML_${fasta%%.vcf.fasta}.ERROR
+
+# This can go a lot faster with openmpi
+#mpirun -n 6 raxmlHPC-MPI-AVX -f a -m ASC_GTRGAMMA --asc-corr=lewis -n ${fasta%%.vcf.fasta} -N 1000 -p 12345 -s ${fasta}.treeable -x 12345 2>&1 > RAxML_${fasta%%.vcf.fasta}.log || touch RAxML_${fasta%%.vcf.fasta}.ERROR
+
+

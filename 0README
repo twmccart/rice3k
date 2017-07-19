@@ -43,7 +43,7 @@ wait
 # The merge function includes filters to remove any sites that don't have at least one alternate allele and one match to the reference, as well as any "Multiple Nucleotide Polymorphism" sites.
 cd $split
 for chromosome in {chr01,chr02,chr03,chr04,chr05,chr06,chr07,chr08,chr09,chr10,chr11,chr12}; do
-	merge $chromosome &
+	merge_chromosome $chromosome &
 done
 
 # After the chromosomes have been individually merged and cleaned, they can be reassembled into one VCF file containing all the sites that were called in all the input cultivars and contain at least one SNP.

@@ -31,9 +31,9 @@ The workflow has two main steps. In the first step, both the HaplotypeCaller and
 generate a `.vcf` file from the `.bam` files. This simply done by running the `generateVCF` script provided with a
 cultivar name. An example of job submission is:
 
-`qsub -l nodes=1:ppn=8,walltime=48:00:00,vmem=30gb -N $cultivar.genotype src/generatevcf`
+`qsub -l nodes=1:ppn=8,walltime=48:00:00,vmem=30gb -N $cultivar.genotype generatevcf`
 
-where `$cultivar` is a cultivar name, e.g. IRIS_313-10295.
+where `$cultivar` is a cultivar name, e.g. IRIS_313-15900.
 
 In the second step, the script will take all the files generated using the `generatevcf` script as input files, and merge the 
 chromosomes in parallel. It will also strip any site that doesn't have SNPs, and concatenate them into a new VCF file containing 
@@ -43,7 +43,7 @@ is generated.
 So for this step you need to make a list containing thee names of all cultivars that need to be processed, then call the script 
 `generatetree` on that list. For example:
 
-`qsub -l nodes=1:ppn=1,walltime=10:00:00,vmem=10gb -N $CULT.tree src/generatetree`
+`qsub -l nodes=1:ppn=1,walltime=10:00:00,vmem=10gb -N $CULT.tree generatetree`
 
 **Note**: The walltime assigned was based on processing 20 cultivars. If more cultivars being processed, then more time might be 
 needed. 

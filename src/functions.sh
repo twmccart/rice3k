@@ -25,7 +25,7 @@ function genotype() {
 		-R ${reference}/all.chrs.fix.fasta \
 		-V $calls/${cultivar}.g.vcf \
 		-o $calls/${cultivar}.vcf \
-		-nt 24
+		-nt 20
 }
 
 function full_genotype() {

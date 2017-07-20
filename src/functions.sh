@@ -75,7 +75,6 @@ function clean_and_split_vcf() {
 		bcftools view --exclude-uncalled --exclude-types 'indels' --genotype ^het -r ${chromosome} -O v ${cultivar}.full.vcf.gz | awk ' /^#/ {print} length($4) == 1 {print} ' | bgzip -c > ../split/${cultivar}.${chromosome}.noindels_nohets_nomnps.vcf.gz; tabix ../split/${cultivar}.${chromosome}.noindels_nohets_nomnps.vcf.gz) &
 	done
 	wait
-	echo "SPLIT IS FINISHED"
 }
 
 function merge_chromosome() {
@@ -107,3 +106,16 @@ function annotate_VCF() {
 	< $file vcf-annotate -a ${reference}/riceexonVCFannotations.gz -c CHROM,FROM,TO,EX -d ${reference}/descriptions.txt > ${file%.vcf}.annotated.vcf
 }
 
+function randomsubsetvcf() {
+	# Takes a vcf file and an integer, outputs to stdout a VCF with $2 random sites from the original
+	file=$1
+	lines=$2
+
+	header_line_number=$(grep --line-number "^#CHROM" ${file} | cut -d":" -f1)
+	let vcf_line_number=$header_line_number+1
+
+	# The header region of the VCF file needs to be preserved
+	head -n "${header_line_number}" ${file}
+	# The 1000 random lines should only come from legitimate sites
+	shuf -n $lines <(tail --lines=+${vcf_line_number} ${file})
+}

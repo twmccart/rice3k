@@ -37,7 +37,7 @@ if [[ -n "$error" ]]; then
 fi
 
 # check reference genome
-if [[ ! -e ${reference}/IRGSP-1.0_genome.fasta.dict ]]; then
+if [[ ! -e ${reference}/IRGSP-1.0_genome.dict ]]; then
 	echo "You need to run INSTALL script" >&2
 	exit 1
 fi

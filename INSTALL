@@ -12,7 +12,7 @@ module load samtools >/dev/null
 
 cd $src
 echo "Downloading Picard"
-wget -N "https://github.com/broadinstitute/picard/releases/download/2.10.3/picard.jar"
+wget -qN "https://github.com/broadinstitute/picard/releases/download/2.10.3/picard.jar"
 
 # Install GATK
 cd $src

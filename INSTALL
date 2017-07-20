@@ -7,7 +7,8 @@ root="$(dirname "$(readlink -f "$0")")"
 cd $root
 
 source $root/src/environment.sh
-module load samtools >/dev/null
+. /etc/profile.d/modules.sh >/dev/null 2>&1
+module load samtools >/dev/null 
 # Download Picard tool
 
 cd $src

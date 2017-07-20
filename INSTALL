@@ -8,13 +8,18 @@ cd $root
 
 source $root/src/environment.sh
 
+# Download Picard tool
+
+cd $src
+wget "https://github.com/broadinstitute/picard/releases/download/2.10.3/picard.jar"
+
 # Download reference sequence
 
 cd $reference
-
 wget "http://rapdb.dna.affrc.go.jp/download/archive/irgsp1/IRGSP-1.0_genome.fasta.gz"
 gunzip IRGSP-1.0_genome.fasta.gz
 samtools faidx IRGSP-1.0_genome.fasta
+picard CreateSequenceDictionary R=IRGSP-1.0_genome.fasta O=IRGSP-1.0_genome.dict
 
 # Install GATK
 cd $src

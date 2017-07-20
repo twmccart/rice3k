@@ -1,9 +1,0 @@
-#!/bin/bash
-set -euo pipefail
-
-# Input file must be VCF, not VCF.gz
-file=$1
-
-reference="/N/dc2/scratch/twmccart/VCFs/reference"
-
-< $file vcf-annotate -a ${reference}/ricegenepromoterVCFannotations.gz -c CHROM,FROM,TO,FE,GN -d ${reference}/descriptions.txt > ${file%.vcf}.annotated.vcf

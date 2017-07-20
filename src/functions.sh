@@ -9,7 +9,7 @@ function call_variants() {
 	cultivar=$1
 
 	$gatk -T HaplotypeCaller \
-		-R ${reference}/all.chrs.fix.fasta \
+		-R ${reference}/IRGSP-1.0_genome.fasta \
 		-I $maps/${cultivar}.realigned.bam \
 		-ERC GVCF \
 		-o $calls/${cultivar}.g.vcf \
@@ -22,7 +22,7 @@ function genotype() {
 	cultivar=$1
 
 	$gatk -T GenotypeGVCFs \
-		-R ${reference}/all.chrs.fix.fasta \
+		-R ${reference}/IRGSP-1.0_genome.fasta \
 		-V $calls/${cultivar}.g.vcf \
 		-o $calls/${cultivar}.vcf \
 		-nt 20
@@ -34,7 +34,7 @@ function full_genotype() {
 	cultivar=$1
 
 	$gatk -T GenotypeGVCFs \
-		-R ${reference}/all.chrs.fix.fasta \
+		-R ${reference}/IRGSP-1.0_genome.fasta \
 		-V $calls/${cultivar}.g.vcf \
 		-allSites \
 		-o $calls/${cultivar}.full.vcf \
@@ -55,7 +55,7 @@ function call_variants_range() {
 
 	$gatk -T HaplotypeCaller \
 		-L $LOCI \
-		-R ${reference}/all.chrs.fix.fasta \
+		-R ${reference}/IRGSP-1.0_genome.fasta \
 		-I $maps/${CULT}.realigned.bam \
 		-ERC GVCF \
 		-o $calls/${CULT}-${LOCI}.g.vcf

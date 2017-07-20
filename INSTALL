@@ -8,7 +8,7 @@ cd $root
 
 source $root/src/environment.sh
 . /etc/profile.d/modules.sh >/dev/null 2>&1
-module load samtools >/dev/null 
+module load samtools >/dev/null 2>&1
 # Download Picard tool
 
 cd $src

@@ -13,6 +13,8 @@ bcftools/1.3
 vcftools/0.1.13
 Python/2.7.x
 RAxML
+biopython
+pyvcf
 
 ### Installation Instructions
 In order to use this workflow, first you need to clone the following repository from GitHub into your working
@@ -28,25 +30,25 @@ tools themselves, the reference genome used in the 3k rice genome project, and i
 
 ### How To Use
 The workflow has two main steps. In the first step, both the HaplotypeCaller and GenotypeGVCFs tools will be called to
-generate a `.vcf` file from the `.bam` files. This simply done by running the `generateVCF` script provided with a
+generate a `.vcf` file from the `.bam` files. This simply done by running the `generatevcf` script provided with a
 cultivar name. An example of job submission is:
 
-`qsub -l nodes=1:ppn=8,walltime=48:00:00,vmem=30gb -N $cultivar.genotype generatevcf`
+`bash generatevcf cultivar`
 
-where `$cultivar` is a cultivar name, e.g. IRIS_313-15900.
+where `cultivar` is any cultivar name, e.g. IRIS_313-15900. This step can very time-consuming; it might take up to 48 hours when run on an 8-cpu computer with a 
+30GB of ram.
 
 In the second step, the script will take all the files generated using the `generatevcf` script as input files, and merge the 
 chromosomes in parallel. It will also strip any site that doesn't have SNPs, and concatenate them into a new VCF file containing 
 only the sites with SNPs. A subset of these SNPs are chosen at random and used as an alignment from which a maximum-likelihood tree 
 is generated.  
 
-So for this step you need to make a list containing thee names of all cultivars that need to be processed, then call the script 
-`generatetree` on that list. For example:
+For this step you need to make a list containing the names of all cultivars that need to be processed, then call the script 
+`generatetree` on that list, as follows:
 
-`qsub -l nodes=1:ppn=1,walltime=10:00:00,vmem=10gb -N $CULT.tree generatetree`
+`bash generatetree cultivarlist`
 
-**Note**: The walltime assigned was based on processing 20 cultivars. If more cultivars being processed, then more time might be 
-needed. 
+**Note**: Here it took about 10 hours to process 20 cultivars. If more cultivars being processed, then more time might be needed.
 
 At this step you should end up with a single file ready to be viewed by a tree viewer program. For instance, we used the **FigTree 
-v1.4.3** to visualize out tree.
+v1.4.3** to visualize our tree.

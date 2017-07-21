@@ -5,16 +5,16 @@ generate VCF files for each chromosome in the cultivar with indels, Multiple Nuc
 heterozygous sites removed. The output of this workflow is a tree file showing the relationship among all processed cultivars.  
 
 ### Requirements
-The following software needs to be loaded on your machine:
-samtools/1.3
-java/1.8.0_40
-tabix
-bcftools/1.3
-vcftools/0.1.13
-Python/2.7.x
-RAxML
-biopython
-pyvcf
+The following software needs to be installed on your machine. The versions listed have been tested successfully:
+Samtools version 1.3.x
+Oracle Java version 1.8.0_131 OR OpenJDK Java version 1.8.0_40 
+Tabix version 0.2.6
+bcftools version 1.3.* 
+vcftools version 0.1.13 (version 0.1.14 does not work)
+Python version 2.7.x
+Biopython version 1.70
+PyVCF version 0.6.8
+RAxML version 8.2.10
 
 ### Installation Instructions
 In order to use this workflow, first you need to clone the following repository from GitHub into your working

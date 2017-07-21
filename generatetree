@@ -13,7 +13,7 @@ cultivarlist=$(cat $filename)
 root="$(dirname "$(readlink -f "$0")")"
 cd $root
 source $root/src/environment.sh
-
+. /etc/profile.d/modules.sh >/dev/null 2>&1
 module load bcftools/1.3 tabix/0.2.6 vcftools/0.1.13 python/2.7.3 raxml >/dev/null 2>&1
 
 unset pipefail
@@ -35,7 +35,7 @@ raxml -h >/dev/null 2>&1 || (echo "could not load raxml" >&2 && error="true")
 
 
 # If VCFs have not been cleaned and split, warn the user
-local error=""
+error=""
 for cultivar in $cultivarlist; do
 	if [[ ! -e ${split}/${cultivar}.chr12.noindels_nohets_nomnps.vcf.gz.tbi ]]; then
 		echo "You need to run generatevcf on ${cultivar}" >&2
@@ -67,8 +67,10 @@ vcf-concat chr*.cleaned.vcf.gz > ${filename%.*}.merge.cleaned.vcf
 #refilter_merged ${filename%.*}.merge.cleaned.vcf
 
 # In order to make trees, random sites from the VCF are selected and turned into a FASTA alignment.
-bash ../src/randomsubsetvcf ${filename%.*}.merge.cleaned.vcf 100000 > ../alignments/${filename%.*}.100000SNPs.vcf
+# First the random sites are turned into a smaller VCF
+randomsubsetvcf ${filename%.*}.merge.cleaned.vcf 100000 > ../alignments/${filename%.*}.100000SNPs.vcf
 cd $alignments
+# Then the VCF is turned into a fasta file with a python script.
 python ../src/snp2seq.py ${filename%.*}.100000SNPs.vcf
 
 cd $root

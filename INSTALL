@@ -33,6 +33,6 @@ samtools faidx IRGSP-1.0_genome.fasta
 rm -f IRGSP-1.0_genome.dict
 java -jar ${src}/picard.jar CreateSequenceDictionary R=IRGSP-1.0_genome.fasta O=IRGSP-1.0_genome.dict
 
-echo "Removing Picard because eff that"
+echo "Removing Picard"
 rm ${src}/picard.jar
 echo "Installation Complete"

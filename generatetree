@@ -16,10 +16,10 @@ source $root/src/environment.sh
 . /etc/profile.d/modules.sh >/dev/null 2>&1
 module load bcftools/1.3 tabix/0.2.6 vcftools/0.1.13 python/2.7.3 raxml >/dev/null 2>&1
 
-
 bcftools --help >/dev/null 2>&1 || (echo "could not load bcftools" >&2 && error="true")
 set +e
 tabix --help >/dev/null 2>&1
+
 if [[ "$?" != "1" ]]; then
 	echo "could not load tabix" >&2
 	error="true"
@@ -45,6 +45,11 @@ if [[ $error == "true" ]]; then
 	exit 1
 fi
 
+<<<<<<< HEAD
+=======
+set -euo pipefail
+
+>>>>>>> 4b1781c994916e4572fc1956aec5efb03c5f5a94
 # Once all of the cultivars are cleaned and split, the chromosomes can be merged by vcf-merge.
 # "bcftools merge" is supposed to be faster, but seems to have a problem with something in the format of these files.
 # The merge function includes filters to remove any sites that don't have at least one alternate allele and one match to the reference, as well as any "Multiple Nucleotide Polymorphism" sites.

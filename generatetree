@@ -45,11 +45,6 @@ if [[ $error == "true" ]]; then
 	exit 1
 fi
 
-<<<<<<< HEAD
-=======
-set -euo pipefail
-
->>>>>>> 4b1781c994916e4572fc1956aec5efb03c5f5a94
 # Once all of the cultivars are cleaned and split, the chromosomes can be merged by vcf-merge.
 # "bcftools merge" is supposed to be faster, but seems to have a problem with something in the format of these files.
 # The merge function includes filters to remove any sites that don't have at least one alternate allele and one match to the reference, as well as any "Multiple Nucleotide Polymorphism" sites.

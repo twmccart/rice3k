@@ -18,9 +18,15 @@ wget -qN "https://github.com/broadinstitute/picard/releases/download/2.10.3/pica
 # Install GATK
 cd $src
 echo "Downloading GATK"
-wget -qO- 'https://software.broadinstitute.org/gatk/download/auth?package=GATK-archive&version=3.6-0-g89b7209' | tar xfj -
-rm -r resources/
+#wget -qO- 'https://software.broadinstitute.org/gatk/download/auth?package=GATK-archive&version=3.6-0-g89b7209' | tar xfj -
+#rm -r resources/
+wget -q -O temp.zip https://software.broadinstitute.org/gatk/download/auth?package=BETA
+unzip temp.zip $$ rm temp.zip
 
+
+echo "Downloading faToTwobit"
+wget -qN http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/faToTwoBit
+chmod +x faToTwoBit
 # Download reference sequence
 
 cd $reference
@@ -31,8 +37,8 @@ wget -qO- "http://rapdb.dna.affrc.go.jp/download/archive/irgsp1/IRGSP-1.0_genome
 echo "Indexing reference"
 samtools faidx IRGSP-1.0_genome.fasta
 rm -f IRGSP-1.0_genome.dict
-${src}/jdk1.8.0_144/bin/java -jar ${src}/picard.jar CreateSequenceDictionary R=IRGSP-1.0_genome.fasta O=IRGSP-1.0_genome.dict
-
+java -jar ${src}/picard.jar CreateSequenceDictionary R=IRGSP-1.0_genome.fasta O=IRGSP-1.0_genome.dict
+${src}/faToTwoBit IRGSP-1.0_genome.fasta IRGSP-1.0_genome.2bit
 echo "Removing Picard"
 rm ${src}/picard.jar
 echo "Installation Complete"

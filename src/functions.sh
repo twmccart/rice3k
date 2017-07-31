@@ -3,42 +3,54 @@
 
 # function that will generate the gvcf file for a given cultivar
 
-function call_variants() {
-	#echo $gatk
+#function call_variants() {
+#	cultivar=$1
+#
+#	$gatk -T HaplotypeCaller \
+#		-R ${reference}/IRGSP-1.0_genome.fasta \
+#		-I $maps/${cultivar}.realigned.bam \
+#		-ERC GVCF \
+#		-o $calls/${cultivar}.g.vcf \
+#		-nct 5
 
+function call_variants() {
 	cultivar=$1
 
-	$gatk -T HaplotypeCaller \
-		-R ${reference}/IRGSP-1.0_genome.fasta \
-		-I $maps/${cultivar}.realigned.bam \
+	$gatklaunch HaplotypeCallerSpark \
+		--reference ${reference}/IRGSP-1.0_genome.2bit \
+		--input $maps/${cultivar}.realigned.bam \
 		-ERC GVCF \
-		-o $calls/${cultivar}.g.vcf \
-		-nct 5
+		-O $calls/${cultivar}.g.vcf \
+		--output_mode EMIT_ALL_SITES
 }
 
 function genotype() {
-	echo $gatk
-
 	cultivar=$1
 
-	$gatk -T GenotypeGVCFs \
+	$gatk -T GenotypeGVCFsSpark \
 		-R ${reference}/IRGSP-1.0_genome.fasta \
 		-V $calls/${cultivar}.g.vcf \
-		-o $calls/${cultivar}.vcf \
-		-nt 20
+		-o $calls/${cultivar}.vcf
 }
 
-function full_genotype() {
-	echo $gatk
+#function full_genotype() {
+#	cultivar=$1
+#
+#	$gatk -T GenotypeGVCFs \
+#		-R ${reference}/IRGSP-1.0_genome.fasta \
+#		-V $calls/${cultivar}.g.vcf \
+#		-allSites \
+#		-o $calls/${cultivar}.full.vcf \
+#		-nt 24
+#}
 
+function full_genotype() {
 	cultivar=$1
 
-	$gatk -T GenotypeGVCFs \
+	$gatklaunch GenotypeGVCFs \
 		-R ${reference}/IRGSP-1.0_genome.fasta \
 		-V $calls/${cultivar}.g.vcf \
-		-allSites \
-		-o $calls/${cultivar}.full.vcf \
-		-nt 24
+		--output $calls/${cultivar}.full.vcf 
 }
 
 
@@ -47,9 +59,6 @@ function full_genotype() {
 # or it can be a file with a list of such formatted loci
 
 function call_variants_range() {
-	which java
-	echo $gatk
-
 	CULT=$1
 	LOCI=$2
 

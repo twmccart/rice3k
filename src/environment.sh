@@ -15,6 +15,6 @@ mkdir -p $reference $reads $maps $calls $log $merges $split $alignments
 
 export picard="${src}/jdk1.8.0_144/bin/java -jar $src/picard.jar"
 #export gatk="java -Xmx16G -Djava.io.tmpdir=/tmp -jar $src/GenomeAnalysisTK.jar"
-export gatk="${src}/jdk1.8.0_144/bin/java -jar $src/GenomeAnalysisTK.jar"
+export gatklaunch="$src/gatk-4.beta.3-SNAPSHOT/gatk-launch"
 
 source $src/functions.sh

@@ -14,6 +14,7 @@ export alignments=${project_root}/alignments
 mkdir -p $reference $reads $maps $calls $log $merges $split $alignments
 
 export picard="java -jar $src/picard.jar"
-export gatk="java -jar $src/GenomeAnalysisTK.jar"
+#export gatk="java -Xmx16G -Djava.io.tmpdir=/tmp -jar $src/GenomeAnalysisTK.jar"
+export gatk="${src}/jdk1.8.0_144/bin/java -jar $src/GenomeAnalysisTK.jar"
 
 source $src/functions.sh

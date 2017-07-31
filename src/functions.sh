@@ -13,7 +13,7 @@ function call_variants() {
 		-I $maps/${cultivar}.realigned.bam \
 		-ERC GVCF \
 		-o $calls/${cultivar}.g.vcf \
-		-nct 8
+		-nct 5
 }
 
 function genotype() {

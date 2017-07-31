@@ -7,8 +7,8 @@ root="$(dirname "$(readlink -f "$0")")"
 cd $root
 
 source $root/src/environment.sh
-. /etc/profile.d/modules.sh >/dev/null 2>&1
-module load samtools >/dev/null 2>&1
+#. /etc/profile.d/modules.sh >/dev/null 2>&1
+#module load samtools >/dev/null 2>&1
 # Download Picard tool
 
 cd $src
@@ -31,7 +31,7 @@ wget -qO- "http://rapdb.dna.affrc.go.jp/download/archive/irgsp1/IRGSP-1.0_genome
 echo "Indexing reference"
 samtools faidx IRGSP-1.0_genome.fasta
 rm -f IRGSP-1.0_genome.dict
-java -jar ${src}/picard.jar CreateSequenceDictionary R=IRGSP-1.0_genome.fasta O=IRGSP-1.0_genome.dict
+${src}/jdk1.8.0_144/bin/java -jar ${src}/picard.jar CreateSequenceDictionary R=IRGSP-1.0_genome.fasta O=IRGSP-1.0_genome.dict
 
 echo "Removing Picard"
 rm ${src}/picard.jar

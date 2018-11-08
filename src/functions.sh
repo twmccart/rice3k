@@ -16,8 +16,8 @@
 function call_variants() {
 	cultivar=$1
 
-	$gatklaunch HaplotypeCallerSpark \
-		--reference ${reference}/IRGSP-1.0_genome.2bit \
+	$gatklaunch HaplotypeCaller \
+		--reference ${reference}/IRGSP-1.0_genome.fasta \
 		--input $maps/${cultivar}.realigned.bam \
 		-ERC GVCF \
 		-O $calls/${cultivar}.g.vcf \
@@ -27,7 +27,7 @@ function call_variants() {
 function genotype() {
 	cultivar=$1
 
-	$gatk -T GenotypeGVCFsSpark \
+	$gatk -T GenotypeGVCFs \
 		-R ${reference}/IRGSP-1.0_genome.fasta \
 		-V $calls/${cultivar}.g.vcf \
 		-o $calls/${cultivar}.vcf

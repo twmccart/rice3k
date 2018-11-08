@@ -25,3 +25,8 @@ testcalls/
 *~
 *.jar
 GenomeAnalysisTK.jar.3.7
+src/faToTwoBit
+src/gatk-4.beta.3-SNAPSHOT/
+src/jdk1.8.0_144/
+src/twoBitInfo
+src/twoBitToFa
